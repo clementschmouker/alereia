@@ -1,6 +1,25 @@
 .news-page {
     padding-top: 5rem;
-    min-height: calc(100vh - #{$footer-height} - 5rem);
+
+    &.dark {
+        background: $dark-color;
+        color: #eee;
+
+        aside {
+            background: #eee;
+            color: black;
+
+            li {
+                &:not(:last-child) {
+                    border-bottom: 1px solid black;
+                }
+            }
+
+            a {
+                color: black;
+            }
+        }
+    }
 
     h1 {
         width: 100%;
@@ -12,6 +31,8 @@
 
     &__content {
         width: calc(100% - 365px);
+        min-height: calc(59vh);
+        margin-bottom: 2rem;
 
         &__title {
             font-family: 'Tablon';
@@ -33,7 +54,7 @@
         float: right;
         width: 315px;
         padding: 2rem;
-        background: black;
+        background: $dark-color;
         color: white;
         box-sizing: border-box;
 

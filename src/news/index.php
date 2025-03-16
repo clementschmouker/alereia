@@ -71,10 +71,10 @@
         <title>News | Aleréia</title>
         <link rel="stylesheet" href="../dist/style.css">
     </head>
-    <body>
+    <body class="news-page">
         <?php include '../components/nav.php'; ?>
 
-        <main class="news-page container">
+        <main class="container">
             <h1 class="news-page__title">News</h1>
             <aside>
                 <h2>Articles</h2>
