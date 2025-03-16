@@ -1,13 +1,29 @@
 .media-page {
     min-height: 100vh;
 
+    &__block {
+        float: right;
+        width: 50%;
+        padding: 2rem;
+        background: $dark-color;
+        color: white;
+        box-shadow: $drop-shadow;
+
+        h1 {
+            font-family: 'Tablon';
+        }
+
+        .link-button {
+            float: right;
+        }
+    }
+
     main {
         min-height: calc(100vh - 164px);
 
         .container {
-            display: flex;
             height: 100%;
-            flex-direction: column;
+            padding-top: calc(80px + 2rem);
         }
     }
 }
