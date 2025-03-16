@@ -40,5 +40,28 @@
                 </div>
             </div>
         </header>
+
+        <main>
+            <?php
+                $mediaContent = array(
+                    array(
+                        "title" => "Hello World",
+                        "description" => "This is a description of Hello World.",
+                        "image" => "image1.jpg"
+                    ),
+                    array(
+                        "title" => "Happy",
+                        "description" => "This is a description of Happy.",
+                        "image" => "image2.jpg"
+                    )
+                );
+                
+                foreach ($mediaContent as $content) {
+                    $content = (object) $content;
+                    include './components/indexmedia.php';
+                }
+            ?>
+            
+        </main>
     </body>
 </html> 
