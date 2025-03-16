@@ -25,9 +25,15 @@
         padding: 2.5rem;
         background: white;
         box-shadow: $drop-shadow;
+        transition: all .3s ease;
 
         &:not(:last-child) {
             margin-right: 1rem;
+        }
+
+        &:hover {
+            background: #eee;
+            transform: scale(1.05);
         }
 
         &__header {
@@ -47,6 +53,11 @@
 
         &__content {
             margin: 0;
+        }
+
+        a {
+            color: black;
+            text-decoration: none;
         }
     }
 }
