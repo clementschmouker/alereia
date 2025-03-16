@@ -34,15 +34,7 @@
         <link rel="stylesheet" href="dist/style.css">
     </head>
     <body>
-        <nav class="nav">
-            <ul class="container">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Monde</a></li>
-                <li><a href="#">Magasin</a></li>
-                <li><a href="#">News</a></li>
-                <li><span>Médias</span></li>
-            </ul>
-        </nav>
+        <?php include './components/nav.php'; ?>
 
         <header class="header">
             <div class="container">
