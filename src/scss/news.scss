@@ -13,6 +13,15 @@
     &__content {
         width: calc(100% - 365px);
 
+        &__title {
+            font-family: 'Tablon';
+            margin-bottom: 0;
+        }
+
+        &__container {
+            margin-top: 3rem;
+        }
+
         img {
             display: block;
             max-width: 100%;

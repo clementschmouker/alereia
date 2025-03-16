@@ -90,9 +90,11 @@
                 </ul>
             </aside>
             <section class="news-page__content">
-                <h2><?php echo $title; ?></h2>
+                <h2 class="news-page__content__title"><?php echo $title; ?></h2>
                 <span><?php echo $author. ' - '. $date; ?></span>
-                <p><?php echo $content; ?></p>
+                <div class="news-page__content__container">
+                    <?php echo $content; ?>
+                </div>
             </section>
         </main>
         <?php include '../components/footer.php'; ?>
