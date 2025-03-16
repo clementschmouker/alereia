@@ -1,0 +1,49 @@
+.header {
+    min-height: 100vh;
+    background-image: url('../images/headerbg.png');
+    background-size: cover;
+
+    h1 {
+        margin: 0;
+        color: white;
+    }
+
+    &__news {
+        padding-top: 60vh;
+    
+        &__list {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+    }
+
+    .card {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        padding: 2.5rem;
+        background: white;
+        box-shadow: $drop-shadow;
+
+        &:not(:last-child) {
+            margin-right: 1rem;
+        }
+
+        &__title {
+            height: 62px;
+            margin: 0;
+            font-family: 'Tablon';
+        }
+
+        &__date {
+            margin-top: 0;
+            font-size: 0.875rem;
+            color: #666;
+        }
+
+        &__content {
+            margin: 0;
+        }
+    }
+}

@@ -25,6 +25,13 @@ module.exports = {
                     'sass-loader',
                 ],
             },
+            {
+                test: /\.(jpg|jpeg|png|gif|svg)$/i, // Add image handling
+                type: 'asset/resource', // Automatically manage images
+                generator: {
+                  filename: 'images/[name][ext][query]', // Define the output location for images
+                },
+              },
         ],
     },
     resolve: {
@@ -39,11 +46,18 @@ module.exports = {
               {
                 from: 'src/**/*.php',
                 to({ context, absoluteFilename }) {
-                  // Relative path from src/
                   const relativePath = path.relative(path.resolve(__dirname, 'src'), absoluteFilename);
                   return path.resolve(__dirname, 'public', relativePath);
                 },
               },
+              {
+                from: 'src/images/**/*',
+                to: path.resolve(__dirname, 'public/images/[name][ext]'),
+              },
+              {
+                from: 'src/fonts/**/*',
+                to: path.resolve(__dirname, 'public/fonts/[name][ext]'),
+              }
             ],
           }),
     ],
