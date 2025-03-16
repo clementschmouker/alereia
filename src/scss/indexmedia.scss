@@ -1,0 +1,27 @@
+.section-media {
+    min-height: 600px;
+    background-size: cover;
+}
+
+.media {
+    position: relative;
+    width: 600px;
+    
+    &__content {
+        position: absolute;
+        top: 2rem;
+        left: 0;
+        padding: 1.5rem 3.8rem;
+        background: rgba(0, 0, 0, .9);
+        color: white;
+
+        &__head {
+            text-transform: uppercase;
+            font-family: 'Tablon';
+        }
+    }
+
+    &__title {
+        margin: 0;
+    }
+}

@@ -30,8 +30,11 @@
             margin-right: 1rem;
         }
 
+        &__header {
+            height: 90px;
+        }
+
         &__title {
-            height: 62px;
             margin: 0;
             font-family: 'Tablon';
         }

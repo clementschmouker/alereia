@@ -1,19 +1,17 @@
 <?php
-// Make sure the 'content' is passed as an object
-$mediaContent = isset($content) && is_object($content) ? $content : null; // You can set a default object if needed
+$mediaContent = isset($content) && is_object($content) ? $content : null;
 ?>
 
-<section class="section-media">
+<section class="section-media" style="background-image: url('<?php echo $mediaContent->image ?>');">
     <div class="container">
         <div class="media">
-            <?php 
-            // Make sure $mediaContent is an object and has the property 'title'
-            if ($mediaContent && isset($mediaContent->title)) {
-                echo htmlspecialchars($mediaContent->title);
-            } else {
-                echo 'Default content'; // Or handle the case when 'title' is not set
-            }
-            ?>
+            <div class="media__content">
+                <div class="media__content__head">
+                    <h2 class="media__title"><span><?php echo $mediaContent->category ?></span> - <?php echo $mediaContent->title ?></h2>
+                </div>
+                
+                <p class="media__description"><?php echo $mediaContent->description ?></p>
+            </div>
         </div>
     </div>
 </section>
