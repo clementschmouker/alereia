@@ -1,7 +1,14 @@
 .footer {
+    height: $footer-height;
     padding: 2rem;
     background: black;
     color: white;
+
+    .container {
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
 
     p {
         margin: 0;
