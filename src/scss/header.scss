@@ -2,19 +2,48 @@
     min-height: 100vh;
     background-image: url('../images/headerbg.png');
     background-size: cover;
+    background-position: 65% center;
+    padding-top: 50vh;
+
+    @include mq("md") {
+        background-position: center center;
+        padding-top: 0;
+    }
 
     h1 {
-        margin: 0;
+        margin: 5rem 0;
         color: white;
+        text-transform: uppercase;
+        font-family: "boucherie-block", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        font-size: 5rem;
+        text-align: center;
+
+        @include mq("md") {
+            margin: 0;
+            visibility: hidden;
+        }
     }
 
     &__news {
-        padding-top: 60vh;
-    
+        @include mq("md") {
+            padding-top: 60vh;
+        }
+
         &__list {
+            width: 100vw;
+            margin-left: -2rem;
+            padding: 0 2rem;
             display: flex;
             justify-content: space-between;
-            width: 100%;
+            overflow-x: scroll;
+            box-sizing: border-box;
+
+            @include mq("md") {
+                overflow-x: hidden;
+                width: 100%;
+            }
         }
     }
 
@@ -23,12 +52,18 @@
         flex: 1;
         flex-direction: column;
         padding: 2.5rem;
+        min-width: 250px;
         background: white;
         box-shadow: $drop-shadow;
         transition: all .3s ease;
+        margin-right: 1rem;
 
         &:not(:last-child) {
-            margin-right: 1rem;
+            margin-bottom: 2rem;
+
+            @include mq("md") {
+                margin-bottom: 0;
+            }
         }
 
         &:hover {

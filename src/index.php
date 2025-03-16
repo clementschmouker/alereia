@@ -1,35 +1,22 @@
 <?php 
-    $mediaContent = array(
+
+    $news = array(
         array(
-            "title" => "ÉPISODE PILOTE",
-            "category" => "Jeux vidéo",
-            "description" => "L'épisode pilote (remplacer par son nom définitif plus tard) est un jeu vidéo narratif très court qui vous plonge directement dans le quotidien de personnages centraux d'Aleréia, le jour d'une mission particulière. Découvrez comment Vangva, Ilyem et Syel évoluent dans ce monde qui leur semble hostile, avec un premier aperçu des pouvoirs spéciaux dont ils ont hérité.<br><br>Vous pouvez y jouer directement sur le site, sans besoin de téléchargement.",
-            "image" => "images/image.png"
+            "title" => "Inauguration du site",
+            "date" => "14/03/2025",
+            "content" => "Le site fait peau neuve ! Explorez les recoins d'Aleréia et de ses personnages et découvrez les différents aspects de cet univers transmédia haut en couleurs."
         ),
         array(
-            "title" => "SI J'OUVRE LES YEUX",
-            "category" => "MUSIQUES",
-            "description" => "La chaîne Youtube d'Aleréia présente des chansons originales produites par plusieurs artistes de talents. Ces musiques, introspectives, proposent d'explorer les pensées profondes de certains personnages et d'apporter des éléments de narration supplémentaires à l'univers, le tout accompagné de visuels animés.",
-            "image" => "images/SyelGlitch.png"
+            "title" => "Nos réseaux sociaux",
+            "date" => "14/03/2025",
+            "content" => "Suivez-nous sur les réseaux sociaux ! Vous pourrez retrouver Aleréia sur les réseaux Bluesky et Mastodon, ainsi que toutes les musiques produites pour l'univers sur sa propre chaîne Youtube dédiée."
         ),
         array(
-            "title" => "CARNET DE PRISME",
-            "category" => "Littérature",
-            "description" => "Aleréia propose aussi tout un panel de textes qui pourront être retrouvés prochainement en ligne sur la plateforme Wattpad. Une première nouvelle a déjà vu le jour, Carnet de Prisme, qui plonge son lecteur dans une histoire centrée autour du personnages de Vangva et ses dilemmes moraux en tant que soldat de Prisme.",
-            "image" => "images/couv.png"
-        ),
-        array(
-            "title" => "LES COULISSES DE L'UNIVERS",
-            "category" => "RÉSEAUX & PATREON",
-            "description" => "Suivez l'autrice d'Aleréia sur ses réseaux sociaux Bluesky (avec des liens cliquables) et Mastodon pour découvrir régulièrement des illustrations, croquis et informations inédits sur l'univers et le travail de sa créatrice. Attention, vous risquez aussi d'y trouver des photos de mignons petits chats. Pour les contributeurs Patreon, vous pourrez accéder à certaines informations inédites et/ou en avant-première.",
-            "image" => "images/glitchfond.png"
-        ),array(
-            "title" => "ÉPISODE PILOTE",
-            "category" => "Jeux vidéo",
-            "description" => "L'épisode pilote (remplacer par son nom définitif plus tard) est un jeu vidéo narratif très court qui vous plonge directement dans le quotidien de personnages centraux d'Aleréia, le jour d'une mission particulière. Découvrez comment Vangva, Ilyem et Syel évoluent dans ce monde qui leur semble hostile, avec un premier aperçu des pouvoirs spéciaux dont ils ont hérité.<br><br>Vous pouvez y jouer directement sur le site, sans besoin de téléchargement.",
-            "image" => "images/image.png"
-        ),
-    );
+            "title" => "Explorez le monde",
+            "date" => "14/03/2025",
+            "content" => "Découvrez le worldbuilding de l'univers à travers une expérience interactive inédite directement sur son site web ! Ouvrez les différentes portes et laissez-vous emporter par une étrange voix numérique..."
+        )
+    )
 ?>
 
 <!DOCTYPE html>
@@ -37,6 +24,8 @@
     <head>
         <title>Aleréia</title>
         <link rel="stylesheet" href="dist/style.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://use.typekit.net/vbr6avk.css">
     </head>
     <body>
         <?php include './components/nav.php'; ?>
@@ -47,33 +36,17 @@
 
                 <div class="header__news">
                     <ul class="header__news__list">
-                        <li class="header__news__card card">
-                            <a href="./news">
-                                <div class="card__header">
-                                    <h2 class="card__title">Inauguration du site</h2>
-                                    <p class="card__date">14/03/2025</p>
-                                </div>
-                                <p class="card__content">Le site fait peau neuve ! Explorez les recoins d'Aleréia et de ses personnages et découvrez les différents aspects de cet univers transmédia haut en couleurs.</p>
-                            </a>
-                        </li>
-                        <li class="header__news__card card">
-                            <a href="./news">
-                                <div class="card__header">
-                                    <h2 class="card__title">Nos réseaux sociaux</h2>
-                                    <p class="card__date">14/03/2025</p>
-                                </div>
-                                <p class="card__content">Suivez-nous sur les réseaux sociaux ! Vous pourrez retrouver Aleréia sur les réseaux Bluesky et Mastodon, ainsi que toutes les musiques produites pour l'univers sur sa propre chaîne Youtube dédiée.</p>
-                            </a>
-                        </li>
-                        <li class="header__news__card card">
-                            <a href="./news">
-                                <div class="card__header">
-                                    <h2 class="card__title">Explorez le monde</h2>
-                                    <p class="card__date">14/03/2025</p>
-                                </div>
-                                <p class="card__content">Découvrez le worldbuilding de l'univers à travers une expérience interactive inédite directement sur son site web ! Ouvrez les différentes portes et laissez-vous emporter par une étrange voix numérique...</p>
-                            </a>
-                        </li>
+                        <?php foreach ($news as $new) { ?>
+                            <li class="header__news__card card">
+                                <a href="./news">
+                                    <div class="card__header">
+                                        <h2 class="card__title"><?php echo $new["title"]; ?></h2>
+                                        <p class="card__date"><?php echo $new["date"]; ?></p>
+                                    </div>
+                                    <p class="card__content"><?php echo $new["content"]; ?></p>
+                                </a>
+                            </li>
+                        <?php } ?>
                     </ul>
                 </div>
             </div>

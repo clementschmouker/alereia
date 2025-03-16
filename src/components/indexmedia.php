@@ -11,6 +11,9 @@
                 </div>
                 
                 <p class="media__description"><?php echo $mediaContent->description ?></p>
+                <a class="media__link link-button" href="<?= $baseUrl ?>medias?id=1">
+                    Consulter
+                </a>
             </div>
         </div>
     </div>

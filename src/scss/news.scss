@@ -24,15 +24,23 @@
     h1 {
         width: 100%;
         margin-bottom: 1rem;
-        font-size: 8rem;
+        font-size: 5rem;
         text-align: center;
         font-family: 'Tablon';
+
+        @include mq("md") {
+            font-size: 8rem;
+        }
     }
 
     &__content {
-        width: calc(100% - 365px);
+        width: 100%;
         min-height: calc(59vh);
         margin-bottom: 2rem;
+
+        @include mq("md") {
+            width: calc(100% - 365px);
+        }
 
         &__title {
             font-family: 'Tablon';
@@ -51,16 +59,21 @@
     }
 
     aside {
-        float: right;
-        width: 315px;
+        width: 100%;
         padding: 2rem;
         background: $dark-color;
         color: white;
         box-sizing: border-box;
 
+        @include mq("md") {
+            width: 315px;
+            float: right;
+        }
+
         h2 {
             margin: 0;
             margin-bottom: 2rem;
+            font-family: 'Tablon';
         }
 
         li {
@@ -77,8 +90,12 @@
             color: white;
             text-decoration: none;
 
-            H3, span {
+            h3, span {
                 margin: 0;
+            }
+
+            h3 {
+                font-family: 'Tablon';
             }
         }
     }

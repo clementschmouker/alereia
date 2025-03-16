@@ -17,6 +17,7 @@
 @import 'header';
 @import 'indexmedia';
 @import 'news';
+@import 'medias';
 
 
 // Common styles
@@ -31,7 +32,33 @@ ul {
     list-style: none;
 }
 
+p {
+    line-height: 140%;
+}
+
 .container {
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 0 2rem;
+    @include mq("lg") {
+        margin: 0 auto;
+    }
+}
+
+.link-button {
+    display: inline-block;
+    margin-top: 2rem;
+    background: white;
+    padding: 1rem 2rem;
+    color: $dark-color;
+    text-decoration: none;
+    font-family: 'Tablon', sans-serif;
+
+    &__icon {
+        display: inline-block;
+        width: 1rem;
+        height: 1rem;
+        margin-left: 1rem;
+        background-image: url('../images/outsidelink.png');
+        background-size: contain;
+    }
 }

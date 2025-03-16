@@ -1,0 +1,32 @@
+.media-page {
+    min-height: 100vh;
+
+    &__block {
+        float: right;
+        padding: 2rem;
+        background: $dark-color;
+        color: white;
+        box-shadow: $drop-shadow;
+
+        @include mq("md") {
+            width: 50%;
+        }
+
+        h1 {
+            font-family: 'Tablon';
+        }
+
+        .link-button {
+            float: right;
+        }
+    }
+
+    main {
+        min-height: calc(100vh - 164px);
+
+        .container {
+            height: 100%;
+            padding-top: calc(80px + 2rem);
+        }
+    }
+}
