@@ -5,6 +5,7 @@
     height: 80px;
     top: 0;
     backdrop-filter: blur(30px);
+    background-color: rgba(0, 0, 0, .3);
     box-shadow: $drop-shadow;
 
     .container {
