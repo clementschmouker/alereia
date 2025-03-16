@@ -1,8 +1,34 @@
+// Import fonts
+@mixin font($font-family, $font-file) {
+    @font-face {
+      font-family: $font-family;
+      src: url($font-file+'.ttf') format('truetype');
+    }
+}
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=VT323&display=swap');
+@include font('Tablon', '../fonts/Tablon-Medium');
+
+// Import partials
+@import '_variables';
+@import 'nav';
+@import 'header';
+@import 'indexmedia';
+@import 'footer';
+
+
+// Common styles
 body {
-    background-color: red;
-    font-family: Arial, sans-serif;
+    margin: 0;
+    font-family: Inter;
 }
 
-p {
-    color: #333;
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
 }
