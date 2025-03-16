@@ -8,6 +8,12 @@
     background-color: rgba(0, 0, 0, .3);
     box-shadow: $drop-shadow;
 
+    display: none;
+
+    @include mq("md") {
+        display: block;
+    }
+
     .container {
         display: flex;
         justify-content: space-between;
@@ -60,12 +66,13 @@
             min-width: 400px;
             display: none;
             box-shadow: $drop-shadow;
+            right: 0;
 
             &::before {
                 content: '';
                 position: absolute;
                 top: -20px;
-                left: 10%;
+                right: 5%;
                 transform: translateX(-50%);
                 border-width: 10px;
                 border-style: solid;

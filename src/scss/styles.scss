@@ -32,9 +32,16 @@ ul {
     list-style: none;
 }
 
+p {
+    line-height: 140%;
+}
+
 .container {
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 0 2rem;
+    @include mq("lg") {
+        margin: 0 auto;
+    }
 }
 
 .link-button {

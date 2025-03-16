@@ -9,6 +9,7 @@
     <head>
         <title>Media | Aleréia</title>
         <link rel="stylesheet" href="../dist/style.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body class="media-page">
         <?php include '../components/nav.php'; ?>

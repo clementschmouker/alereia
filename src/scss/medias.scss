@@ -3,11 +3,14 @@
 
     &__block {
         float: right;
-        width: 50%;
         padding: 2rem;
         background: $dark-color;
         color: white;
         box-shadow: $drop-shadow;
+
+        @include mq("md") {
+            width: 50%;
+        }
 
         h1 {
             font-family: 'Tablon';
