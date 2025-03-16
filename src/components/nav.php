@@ -82,7 +82,7 @@
             <li><a href="<?= $baseUrl ?>monde">Monde</a></li>
             <li><a href="<?= $baseUrl ?>magasin">Magasin</a></li>
             <li><a href="<?= $baseUrl ?>news">News</a></li>
-            <li><span>Médias</span></li>
+            <li><span class="nav__medias">Médias</span></li>
         </ul>
     </div>
 </nav>

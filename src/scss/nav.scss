@@ -138,4 +138,34 @@
             margin-bottom: 5px;
         }
     }
+
+    &__content {
+        display: none;
+    }
+}
+
+.open {
+    .nav-small__content {
+        display: block;
+        width: 100vw;
+        height: 100vh;
+        background: $dark-color;
+
+        ul {
+            padding: 2rem;
+            padding-top: 6rem;
+
+            li {
+                text-align: right;
+                margin-bottom: 2rem;
+            }
+        }
+
+        a, .nav__medias {
+            color: white;
+            font-family: 'Tablon';
+            font-size: 2rem;
+            text-decoration: none;
+        }
+    }
 }
