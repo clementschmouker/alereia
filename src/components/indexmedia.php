@@ -1,5 +1,5 @@
 <?php
-$mediaContent = isset($content) && is_object($content) ? $content : null;
+    $mediaContent = isset($content) && is_object($content) ? $content : null;
 ?>
 
 <section class="section-media" style="background-image: url('<?php echo $mediaContent->image ?>');">
