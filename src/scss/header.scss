@@ -43,6 +43,8 @@
             @include mq("md") {
                 overflow-x: hidden;
                 width: 100%;
+                padding: 0;
+                margin: 0;
             }
         }
     }
@@ -52,18 +54,14 @@
         flex: 1;
         flex-direction: column;
         padding: 2.5rem;
-        min-width: 250px;
+        min-width: 350px;
         background: white;
         box-shadow: $drop-shadow;
         transition: all .3s ease;
         margin-right: 1rem;
 
-        &:not(:last-child) {
-            margin-bottom: 2rem;
-
-            @include mq("md") {
-                margin-bottom: 0;
-            }
+        @include mq("md") {
+            min-width: 0;
         }
 
         &:hover {
