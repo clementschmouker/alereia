@@ -54,16 +54,18 @@
         <li class="nav__medias">
             <span class="nav__medias__title">Médias</span>
             <div class="nav__medias__box">
-                <?php foreach ($groupedContent as $category): ?>
-                    <div class="nav__medias__box__category">
-                        <h2><?= $category['category'] ?></h2>
-                        <ul>
-                            <?php foreach ($category['medias'] as $media): ?>
-                                <li><a href="<?= $baseUrl ?>medias"><?= $media['title'] ?></a></li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
-                <?php endforeach; ?>
+                <div class="nav__medias__box__overflow">
+                    <?php foreach ($groupedContent as $category): ?>
+                        <div class="nav__medias__box__category">
+                            <h2><?= $category['category'] ?></h2>
+                            <ul>
+                                <?php foreach ($category['medias'] as $media): ?>
+                                    <li><a href="<?= $baseUrl ?>medias"><?= $media['title'] ?></a></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
             </div>
         </li>
     </ul>

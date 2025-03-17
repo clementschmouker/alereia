@@ -53,6 +53,12 @@
 
     &__medias {
         position: relative;
+        
+        @include mq("md") {
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
 
         span {
             color: white;
@@ -65,19 +71,32 @@
 
         &:hover {
             .nav__medias__box {
-                display: block;
+                opacity: 1;
+                transform: translateY(0);
+                pointer-events: all;
+
+                &__category {
+                    opacity: 1;
+                    transform: translateX(0);
+                    pointer-events: all;
+                }
             }
         }
 
         &__box {
             position: absolute;
             z-index: 10;
-            top: 26px;
+            top: 100%;
             background: white;
             min-width: 400px;
-            display: none;
+            display: block;
             box-shadow: $drop-shadow;
             right: 0;
+            transform: translateY(30px);
+            opacity: 0;
+            pointer-events: none;
+
+            transition: all .3s ease-out;
 
             &::before {
                 content: '';
@@ -90,9 +109,24 @@
                 border-color: transparent transparent $dark-color transparent;
             }
 
+            &__overflow {            
+                overflow: hidden;
+            }
+
             &__category {
+                opacity: 0;
+                transform: translateX(100%);
                 margin-bottom: 1rem;
                 font-family: 'Tablon';
+                pointer-events: none;
+
+                transition: all .3s ease-out;
+
+                @for $i from 1 through 10 {
+                    &:nth-child(#{$i}) {
+                        transition-delay: #{($i * 0.05)}s;
+                    }
+                }
 
                 h2 {
                     margin: 0;
