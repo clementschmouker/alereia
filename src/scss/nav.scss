@@ -198,7 +198,7 @@
         height: 20px;
         background-size: contain;
 
-        transform: rotate(-90deg);
+        transform: rotate(0deg);
         transition: all .3s ease-out;
     }
 
@@ -316,21 +316,23 @@
             text-decoration: none;
         }
 
-        .revealed .nav__medias__box {
-            pointer-events: all;
-            height: auto;
-            right: 0;
-            opacity: 1;
-    
-            transform: translateX(0);
-    
-            .nav__medias__box__icon {
-                transform: rotate(0) !important;
+        .revealed {
+            .nav-small__medias__icon {
+                transform: rotate(180deg);
             }
-    
-            .nav__medias__box__category {
-                transform: translateX(0);
+
+            .nav__medias__box {
+                pointer-events: all;
+                height: auto;
+                right: 0;
                 opacity: 1;
+        
+                transform: translateX(0);
+        
+                .nav__medias__box__category {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
             }
         }
     }
