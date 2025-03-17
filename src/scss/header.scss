@@ -76,16 +76,19 @@
         &__title {
             margin: 0;
             font-family: 'Tablon';
+            pointer-events: none;
         }
 
         &__date {
             margin-top: 0;
             font-size: 0.875rem;
             color: #666;
+            pointer-events: none;
         }
 
         &__content {
             margin: 0;
+            pointer-events: none;
         }
 
         a {
