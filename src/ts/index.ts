@@ -11,3 +11,12 @@ if (navButtonMobile) {
         navMobile?.classList.toggle('open');
     });
 }
+
+const mediaMobileButton = document.querySelector('.nav-small__content .nav__medias');
+const mediaMobile = document.querySelector('.nav-small__content .nav__medias__box');
+
+if (mediaMobileButton && mediaMobile) {
+    mediaMobileButton.addEventListener('click', () => {
+        mediaMobile.classList.toggle('open');
+    });
+}

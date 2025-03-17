@@ -77,12 +77,26 @@
     </button>
 
     <div class="nav-small__content">
-        <ul>
+        <ul class="nav-small__content__list">
             <li><a href="<?= $baseUrl ?>">Home</a></li>
             <li><a href="<?= $baseUrl ?>monde">Monde</a></li>
             <li><a href="<?= $baseUrl ?>magasin">Magasin</a></li>
             <li><a href="<?= $baseUrl ?>news">News</a></li>
-            <li><span class="nav__medias">Médias</span></li>
+            <li class="nav__medias">
+                <span>Médias <div class="nav-small__medias__icon"></div></span>
+                <div class="nav__medias__box">
+                    <?php foreach ($groupedContent as $category): ?>
+                        <div class="nav__medias__box__category">
+                            <h2><?= $category['category'] ?></h2>
+                            <ul>
+                                <?php foreach ($category['medias'] as $media): ?>
+                                    <li class="nav__medias__box__el"><a href="<?= $baseUrl ?>medias"><?= $media['title'] ?></a></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </li>
         </ul>
     </div>
 </nav>
