@@ -157,11 +157,27 @@
         }
     }
 
+    &__medias__icon {
+        display: inline-block;
+        background-image: url('../images/arrow-down.svg');
+        width: 20px;
+        height: 20px;
+        background-size: contain;
+
+        transform: rotate(-90deg);
+        transition: all .3s ease-out;
+    }
+
     .nav__medias__box {
         display: block;
+        position: absolute;
         top: 3rem;
         width: 100%;
         min-width: 0;
+        height: 0;
+        opacity: 0;
+        pointer-events: none;
+        overflow: hidden;
     }
 
     &__content {
@@ -191,7 +207,7 @@
         top: 0;
         right: 0;
         width: 100vw;
-        height: 100vh;
+        max-height: 100vh;
         background: $dark-color;
         overflow-y: scroll;
         overflow-x: hidden;
@@ -212,20 +228,10 @@
                 position: absolute;
                 pointer-events: none;
                 right: -100%;
-                opacity: 0;
                 transition: all .3s ease-out;
-
-                &.open {
-                    position: relative;
-                    pointer-events: all;
-                    right: 0;
-                    opacity: 1;
-
-                    .nav__medias__box__category {
-                        transform: translateX(0);
-                        opacity: 1;
-                    }
-                }
+                position: relative;
+                opacity: 1;
+                pointer-events: all;
 
                 .nav__medias__box__category {
                     transform: translateX(100%);
@@ -269,5 +275,24 @@
             font-size: 2rem;
             text-decoration: none;
         }
+
+        .revealed .nav__medias__box {
+            pointer-events: all;
+            height: auto;
+            right: 0;
+            opacity: 1;
+    
+            transform: translateX(0);
+    
+            .nav__medias__box__icon {
+                transform: rotate(0);
+            }
+    
+            .nav__medias__box__category {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
     }
+    
 }
