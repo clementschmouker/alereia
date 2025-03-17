@@ -1,17 +1,28 @@
 .nav {
     position: fixed;
     z-index: 10;
-    width: 100%;
-    height: 80px;
-    top: 0;
-    backdrop-filter: blur(30px);
-    background-color: rgba(0, 0, 0, .3);
-    box-shadow: $drop-shadow;
 
-    display: none;
+    &.nav-large {
+        display: none;
+        width: 100%;
+        height: 80px;
+        top: 0;
+        backdrop-filter: blur(30px);
+        background-color: rgba(0, 0, 0, .3);
+        box-shadow: $drop-shadow;
 
-    @include mq("md") {
+        @include mq("md") {
+            display: block;
+        }
+    }
+
+    &.nav-small {
         display: block;
+        width: 100%;
+
+        @include mq("md") {
+            display: none;
+        }
     }
 
     .container {
@@ -103,6 +114,94 @@
                     text-decoration: none;
                 }
             }
+        }
+    }
+}
+
+.nav-small {
+    overflow: hidden;
+
+    &__button {
+        position: fixed;
+        z-index: 10;
+        top: 1rem;
+        right: 1rem;
+        padding: 1rem;
+        background: $dark-color;
+        color: white;
+        box-shadow: $drop-shadow;
+        cursor: pointer;
+
+        span {
+            display: block;
+            width: 25px;
+            height: 2px;
+            background: white;
+            margin-bottom: 5px;
+
+            transition: all .3s ease;
+        }
+
+        .open & {
+            span {
+                &:nth-child(1) {
+                    transform: rotate(45deg) translate(5px, 5px);
+                }
+                &:nth-child(2) {
+                    opacity: 0;
+                }
+                &:nth-child(3) {
+                    transform: rotate(-45deg) translate(5px, -5px);
+                }
+            }
+        }
+    }
+
+    &__content {
+        position: fixed;
+        right: -100%;
+
+        transition: all .3s ease-out;
+
+        li {
+            opacity: 0;
+            transform: translateX(100%);
+            transition: transform .3s ease-out, opacity .3s ease-out;
+
+            @for $i from 1 through 10 {
+                &:nth-child(#{$i}) {
+                    transition-delay: #{($i * 0.05)}s;
+                }
+            }
+        }
+    }
+}
+
+.open {
+    .nav-small__content {
+        top: 0;
+        right: 0;
+        width: 100vw;
+        height: 100vh;
+        background: $dark-color;
+
+        ul {
+            padding: 2rem;
+            padding-top: 6rem;
+
+            li {
+                text-align: right;
+                margin-bottom: 2rem;
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        a, .nav__medias {
+            color: white;
+            font-family: 'Tablon';
+            font-size: 2rem;
+            text-decoration: none;
         }
     }
 }

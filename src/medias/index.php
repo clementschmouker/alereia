@@ -28,5 +28,6 @@
         </main>
 
         <?php include '../components/footer.php'; ?>
+        <script src="../dist/bundle.js"></script>
     </body>
 </html>

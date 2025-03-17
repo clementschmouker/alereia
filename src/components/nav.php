@@ -45,7 +45,7 @@
 
     $groupedContent = array_values($groupedContent);
 ?>
-<nav class="nav">
+<nav class="nav nav-large">
     <ul class="container">
         <li class="link"><a href="<?= $baseUrl ?>">Home</a></li>
         <li class="link"><a href="<?= $baseUrl ?>monde">Monde</a></li>
@@ -67,4 +67,22 @@
             </div>
         </li>
     </ul>
+</nav>
+
+<nav class="nav nav-small">
+    <button class="nav-small__button">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div class="nav-small__content">
+        <ul>
+            <li><a href="<?= $baseUrl ?>">Home</a></li>
+            <li><a href="<?= $baseUrl ?>monde">Monde</a></li>
+            <li><a href="<?= $baseUrl ?>magasin">Magasin</a></li>
+            <li><a href="<?= $baseUrl ?>news">News</a></li>
+            <li><span class="nav__medias">Médias</span></li>
+        </ul>
+    </div>
 </nav>
