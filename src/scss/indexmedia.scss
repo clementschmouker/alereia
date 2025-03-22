@@ -1,7 +1,27 @@
 .section-media {
+    position: relative;
     min-height: 600px;
     padding: 4rem 0;
     background-size: cover;
+    background-position: center center;
+
+
+    &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: -12.5px;
+        left: 0;
+        background-image: url('../images/separateur.webp');
+        background-size: contain;
+        width: 100%;
+        height: 25px;
+
+        @include mq("md") {
+            top: -50px;
+            height: 100px;
+        }
+    }
 
     &:nth-child(even) {
         .media__content {
@@ -16,7 +36,7 @@
     
     &__content {
         position: relative;
-        padding: 1.5rem 3.8rem;
+        padding: 2rem;
         background: rgba(0, 0, 0, .9);
         color: white;
 
@@ -25,6 +45,7 @@
             position: absolute;
             top: 2rem;
             left: 0;
+            padding: 1.5rem 3.8rem;
         }
 
         &__head {

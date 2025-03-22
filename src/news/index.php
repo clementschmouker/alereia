@@ -72,7 +72,7 @@
         <link rel="stylesheet" href="../dist/style.css">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
-    <body class="news-page">
+    <body class="news-page dark">
         <?php include '../components/nav.php'; ?>
 
         <main class="container">

@@ -1,7 +1,7 @@
 <?php
     $title = "SI J'OUVRE LES YEUX";
     $description = "La chaîne Youtube d'Aleréia présente des chansons originales produites par plusieurs artistes de talents. Ces musiques, introspectives, proposent d'explorer les pensées profondes de certains personnages et d'apporter des éléments de narration supplémentaires à l'univers, le tout accompagné de visuels animés.";
-    $backgroundUrl = "../images/SyelGlitch.png";
+    $backgroundUrl = "../images/MediaMusique.webp";
 ?>
 
 <!DOCTYPE html>
