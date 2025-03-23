@@ -105,17 +105,6 @@
 
             transition: all .3s ease-out;
 
-            &::before {
-                content: '';
-                position: absolute;
-                top: -20px;
-                right: 5%;
-                transform: translateX(-50%);
-                border-width: 10px;
-                border-style: solid;
-                border-color: transparent transparent $dark-color transparent;
-            }
-
             &__overflow {            
                 overflow: hidden;
             }
@@ -155,17 +144,6 @@
                     padding-left: 2rem;
                     color: black !important;
                     text-decoration: none;
-
-                    &::before {
-                        content: '';
-                        display: block;
-                        width: 20px;
-                        height: 20px;
-                        background-image: url('../images/arrow.svg');
-                        background-size: contain;
-                        background-position: center;
-                        background-repeat: no-repeat;
-                    }
                 }
             }
         }

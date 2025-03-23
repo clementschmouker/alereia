@@ -60,6 +60,12 @@ export function addGlitchEffect(element: HTMLElement, sliceCount: number = 5) {
   });
 
   element.addEventListener('mouseleave', () => {
+    glitchContainer.querySelectorAll('.glitch-slice').forEach((slice) => {
+      const s = slice as HTMLDivElement;
+      const animations = s.getAnimations();
+      animations.forEach(anim => anim.cancel());
+    });
+  
     glitchContainer.innerHTML = '';
     element.classList.remove('hidden');
   });

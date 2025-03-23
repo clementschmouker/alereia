@@ -73,7 +73,10 @@
                             <h2><?= $category['category'] ?></h2>
                             <ul>
                                 <?php foreach ($category['medias'] as $media): ?>
-                                    <li><a href="<?= $baseUrl ?>medias"><?= $media['title'] ?></a></li>
+                                    <li class="glitch-wrapper">
+                                        <a href="<?= $baseUrl ?>medias" class="glitch-target"><?= $media['title'] ?></a>
+                                        <div class="glitch-layer-container"></div>
+                                    </li>
                                 <?php endforeach; ?>
                             </ul>
                         </div>

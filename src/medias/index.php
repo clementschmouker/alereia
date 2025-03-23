@@ -29,10 +29,13 @@
                 <div class="media-page__block">
                     <h1><?= $title ?></h1>
                     <p><?= $description ?></p>
-                    <a href="#" class="link-button">
-                        Accéder
-                        <span class="link-button__icon"></span>
-                    </a>
+                    <div class="glitch-wrapper">
+                        <a href="#" class="glitch-target link-button">
+                            Accéder
+                            <span class="link-button__icon"></span>
+                        </a>
+                        <div class="glitch-layer-container"></div>
+                    </div>
                 </div>
             </div>
         </main>
