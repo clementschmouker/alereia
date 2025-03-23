@@ -1,7 +1,17 @@
 <?php
     $title = "SI J'OUVRE LES YEUX";
-    $description = "La chaîne Youtube d'Aleréia présente des chansons originales produites par plusieurs artistes de talents. Ces musiques, introspectives, proposent d'explorer les pensées profondes de certains personnages et d'apporter des éléments de narration supplémentaires à l'univers, le tout accompagné de visuels animés.";
+    $description = "Si j'ouvre les yeux est le fruit de la collaboration de plusieurs artistes et musiciens. Très introspective, la chanson évoque la peur d'affronter le monde extérieur. Dans l'univers d'Aleréia, elle peut être comprise de multiples façons et correspondre à beaucoup de ses personnages ; c'est pour cette raison qu'elle a été choisie comme étant la première production musicale de l'univers transmédia.
+        <br>
+        <br>
+        La vidéo qui l'accompagne représente Syel et sa difficulté à ouvrir les yeux. Syel étant un personnage particulier qui subit beaucoup d'oppression de la part d'autres acteurs du récit, cette thématique est particulièrement pertinente pour lui.
+        <br>
+        <br>
+        Composition : Gaëlle Louvet, Yves Baar, KylerVLK<br>
+        Arrangement : Yves Baar<br>
+        Interprétation : Gaëlle Louvet, KylerVLK<br>
+        Paroles : Gaëlle Louvet, KylerVLK, Charlie Breidt<br>";
     $backgroundUrl = "../images/MediaMusique.webp";
+    
 ?>
 
 <!DOCTYPE html>
