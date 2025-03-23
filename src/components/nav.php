@@ -1,6 +1,6 @@
 <?php
-    // $baseUrl = '/alereia/public/';
-    $baseUrl = '/B2T1/projets/alereia_staging/';
+    $baseUrl = '/alereia/public/';
+    // $baseUrl = '/B2T1/projets/alereia_staging/';
     
     $mediaContent = array(
         array(
@@ -48,7 +48,7 @@
 ?>
 <nav class="nav nav-large">
     <ul class="container">
-        <li class="link"><a href="<?= $baseUrl ?>">Home</a></li>
+        <li class="link home"><a href="<?= $baseUrl ?>">Home</a></li>
         <li class="link"><a href="<?= $baseUrl ?>univers">Univers</a></li>
         <li class="link nav__medias">
             <span class="nav__medias__title">Médias</span>

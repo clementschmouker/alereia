@@ -48,6 +48,17 @@
                 font-weight: 500;
                 font-family: 'Tablon', sans-serif;
             }
+
+            &.home a {
+                display: block;
+                width: 100px;
+                height: 80px;
+                color: rgba(255, 255, 255, 0);
+                background-image: url('../images/alereialogo.svg');
+                background-position: center;
+                background-size: contain;
+                background-repeat: no-repeat;
+            }
         }
     }
 
@@ -142,10 +153,23 @@
                 }
             
                 a {
+                    display: flex;
+                    align-items: center;
                     padding: 1rem;
                     padding-left: 2rem;
                     color: black !important;
                     text-decoration: none;
+
+                    &::before {
+                        content: '';
+                        display: block;
+                        width: 20px;
+                        height: 20px;
+                        background-image: url('../images/arrow.svg');
+                        background-size: contain;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                    }
                 }
             }
         }

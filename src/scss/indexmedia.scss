@@ -10,16 +10,16 @@
         content: '';
         display: block;
         position: absolute;
-        top: -12.5px;
+        top: -25px;
         left: 0;
-        background-image: url('../images/separateurVector.svg');
-        background-size: contain;
+        background-image: url('../images/testseparator.svg');
+        background-repeat: repeat no-repeat;
         width: 100%;
-        height: 25px;
+        height: 50px;
 
         @include mq("md") {
             top: -50px;
-            height: 100px;
+            height: 200px;
         }
     }
 

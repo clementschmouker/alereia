@@ -122,6 +122,20 @@ const Universe = () => {
         renderer.render(scene, camera);
     };
 
+    const onWindowResize = () => {
+        const newWidth = window.innerWidth;
+        const newHeight = window.innerHeight;
+
+        camera.aspect = newWidth / newHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(newWidth, newHeight);
+
+        controls.update();
+    };
+
+    window.addEventListener('resize', onWindowResize);
+
     const init = () => {
         animate();
     };
