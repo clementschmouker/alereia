@@ -1,12 +1,13 @@
 import '../scss/styles.scss';
 
 import Universe from './univers';
+import { addGlitchEffect } from './title';
 import html2canvas from 'html2canvas';
 
 
 // MOBILE NAV
-const navButtonMobile = document.querySelector<HTMLButtonElement>('.nav-small__button');
-const navMobile = document.querySelector<HTMLElement>('.nav-small');
+const navButtonMobile = document.querySelector('.nav-small__button');
+const navMobile = document.querySelector('.nav-small');
 
 let navMobileOpen = false;
 
@@ -15,8 +16,8 @@ navButtonMobile?.addEventListener('click', () => {
     navMobile?.classList.toggle('open');
 });
 
-const mediaMobileButton = document.querySelector<HTMLElement>('.nav-small__content .nav__medias');
-const mediaMobile = document.querySelector<HTMLElement>('.nav-small__content .nav__medias');
+const mediaMobileButton = document.querySelector('.nav-small__content .nav__medias');
+const mediaMobile = document.querySelector('.nav-small__content .nav__medias');
 
 mediaMobileButton?.addEventListener('click', () => {
     mediaMobile?.classList.toggle('revealed');
@@ -24,10 +25,18 @@ mediaMobileButton?.addEventListener('click', () => {
 
 
 // UNIVERSE IF EXISTS
-const universeElement = document.querySelector<HTMLElement>('#univers');
+const universeElement = document.querySelector('#univers');
 if (universeElement) {
     const universe = Universe();
     universe.init();
+}
+
+// GLITCH ELEMENTS
+const glitchElements = document.querySelectorAll('.glitch-target');
+if (glitchElements) {
+    glitchElements.forEach((element) => {
+        addGlitchEffect(element as HTMLElement);
+    });
 }
 
 

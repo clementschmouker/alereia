@@ -32,11 +32,10 @@
 
         <header class="header">
             <div class="container">
-                <h1>Aleréia</h1>
-                <div class="header__logo">
-                    <?php include './components/alereiaLogoComponent.php' ?>
+                <div class="glitch-wrapper">
+                    <h1 class="glitch-target">Aleréia</h1>
+                    <div class="glitch-layer-container"></div>
                 </div>
-
                 <div class="header__news">
                     <ul class="header__news__list">
                         <?php foreach ($news as $new) { ?>

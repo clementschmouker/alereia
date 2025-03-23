@@ -14,11 +14,20 @@
     }
 
     h1 {
-        visibility: hidden;
+        color: white;
+        display: block;
+        max-width: 700px;
+        width: 100%;
+        margin-bottom: 30vh;
+        
+        font-family: "boucherie-block", sans-serif;
+        font-weight: 400;
+        font-style: normal;
 
         @include mq("md") {
             margin: 0;
-            visibility: hidden;
+            font-size: 10rem;
+            // visibility: hidden;
         }
     }
 
@@ -38,7 +47,7 @@
 
     &__news {
         @include mq("md") {
-            padding-top: 60vh;
+            padding-top: 30vh;
         }
 
         &__list {
@@ -106,4 +115,15 @@
             text-decoration: none;
         }
     }
+      
+    #glitch-layer-container {
+        position: relative;
+        pointer-events: none;
+        z-index: 1000;
+    }
+    .glitch-slice {
+        position: absolute;
+        will-change: transform;
+    }
+         
 }
