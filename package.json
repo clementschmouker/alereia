@@ -25,6 +25,7 @@
     "webpack-dev-server": "^5.2.0"
   },
   "dependencies": {
+    "html2canvas": "^1.4.1",
     "three": "^0.174.0"
   }
 }

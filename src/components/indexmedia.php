@@ -3,6 +3,7 @@
 ?>
 
 <section class="section-media" style="background-image: url('<?php echo $mediaContent->image ?>');">
+    <div class="separator glitch-problem-element"></div>
     <div class="container">
         <div class="media">
             <div class="media__content">

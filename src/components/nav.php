@@ -57,7 +57,7 @@
 
     $groupedContent = array_values($groupedContent);
 ?>
-<nav class="nav nav-large">
+<nav class="nav nav-large no-backdrop-blur">
     <ul class="container">
         <li class="link home"><a href="<?= $baseUrl ?>">Home</a></li>
         <li class="link"><a href="<?= $baseUrl ?>univers">Univers</a></li>
