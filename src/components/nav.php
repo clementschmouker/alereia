@@ -52,7 +52,11 @@
 ?>
 <nav class="nav nav-large">
     <ul class="container">
-        <li class="link"><a href="<?= $baseUrl ?>">Accueil</a></li>
+        <li class="link home">
+            <a href="<?= $baseUrl ?>">
+                <?php include './components/alereiaLogoComponent.php' ?>
+            </a>
+        </li>
         <li class="link"><a href="<?= $baseUrl ?>univers">Univers</a></li>
         <li class="link nav__medias">
             <span class="nav__medias__title">Médias</span>
