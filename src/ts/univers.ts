@@ -10,6 +10,8 @@ const Universe = () => {
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x0a0a0a);
 
+    const htmlDoors = document.querySelectorAll('.univers__door');
+
     const camera = new THREE.PerspectiveCamera(75, windowWidth / windowHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true });
 
@@ -48,11 +50,10 @@ const Universe = () => {
 
     // Doors
     const doors: THREE.Mesh[] = [];
-    const numDoors = 8;
     const radius = 10;
 
-    for (let i = 0; i < numDoors; i++) {
-        const angle = (i / numDoors) * Math.PI * 2;
+    for (let i = 0; i < htmlDoors.length; i++) {
+        const angle = (i / htmlDoors.length) * Math.PI * 2;
         const door = new DoorComponent().element;
 
         door.position.x = Math.cos(angle) * radius;
@@ -89,7 +90,7 @@ const Universe = () => {
         } else {
             if (isHovering) {
                 isHovering = false;
-                animatePaused = false; /
+                animatePaused = false;
                 lastTime += clock.getElapsedTime() - timeWhenHovered;
             }
         }
@@ -107,7 +108,7 @@ const Universe = () => {
 
             doors.forEach((door, i) => {
                 const orbitSpeed = 0.5;
-                const orbitAngle = adjustedElapsed * orbitSpeed + (i / numDoors) * Math.PI * 2;
+                const orbitAngle = adjustedElapsed * orbitSpeed + (i / htmlDoors.length) * Math.PI * 2;
 
                 door.position.x = Math.cos(orbitAngle) * radius;
                 door.position.z = Math.sin(orbitAngle) * radius;

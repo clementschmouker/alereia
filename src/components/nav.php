@@ -1,5 +1,6 @@
 <?php
-    $baseUrl = '/alereia/public/';
+    // $baseUrl = '/alereia/public/';
+    $baseUrl = '/B2T1/projets/alereia_staging/';
     
     $mediaContent = array(
         array(
