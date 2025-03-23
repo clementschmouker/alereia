@@ -39,6 +39,22 @@ if (glitchElements) {
     });
 }
 
+// COLLAPSE MEDIA CATEGORIES
+const categories = document.querySelectorAll('.nav__medias__box__category');
+
+categories.forEach(category => {
+    const toggle = category.querySelector('.category-toggle');
+    if (toggle) {
+        toggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            categories.forEach((el) => {
+                el.classList.add('collapsed');
+            })
+            category.classList.toggle('collapsed');
+        });
+    }
+});
+
 
 // GLITCH EFFECT
 const canvas: HTMLCanvasElement = document.createElement('canvas');

@@ -69,8 +69,11 @@
             <div class="nav__medias__box">
                 <div class="nav__medias__box__overflow">
                     <?php foreach ($groupedContent as $category): ?>
-                        <div class="nav__medias__box__category">
-                            <h2><?= $category['category'] ?></h2>
+                        <div class="nav__medias__box__category <?= $category === reset($groupedContent) ? '' : 'collapsed' ?>">
+                            <h2>
+                                <?= $category['category'] ?>
+                                <span class="category-toggle"></span>
+                            </h2>
                             <ul>
                                 <?php foreach ($category['medias'] as $media): ?>
                                     <li class="glitch-wrapper">
@@ -91,10 +94,7 @@
             </div>
         </li>
         <li class="link">
-            <div class="glitch-wrapper">
-                <a href="<?= $baseUrl ?>magasin" class="glitch-target">Boutique</a>
-                <div class="glitch-layer-container"></div>
-            </div>
+            <a href="<?= $baseUrl ?>magasin" class="disabled">Boutique</a>
         </li>
     </ul>
 </nav>
