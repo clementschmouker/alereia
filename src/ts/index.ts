@@ -1,7 +1,10 @@
 import '../scss/styles.scss';
+
 import Universe from './univers';
 import html2canvas from 'html2canvas';
 
+
+// MOBILE NAV
 const navButtonMobile = document.querySelector<HTMLButtonElement>('.nav-small__button');
 const navMobile = document.querySelector<HTMLElement>('.nav-small');
 
@@ -19,12 +22,16 @@ mediaMobileButton?.addEventListener('click', () => {
     mediaMobile?.classList.toggle('revealed');
 });
 
+
+// UNIVERSE IF EXISTS
 const universeElement = document.querySelector<HTMLElement>('#univers');
 if (universeElement) {
     const universe = Universe();
     universe.init();
 }
 
+
+// GLITCH EFFECT
 const canvas: HTMLCanvasElement = document.createElement('canvas');
 canvas.classList.add('glitchCanvas');
 document.body.appendChild(canvas);

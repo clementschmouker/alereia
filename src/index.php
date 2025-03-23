@@ -33,7 +33,9 @@
         <header class="header">
             <div class="container">
                 <h1>Aleréia</h1>
-                <img class="header__logo" src="./images/alereialogo.svg" alt="Logo d'Aleréia" class="header__logo">
+                <div class="header__logo">
+                    <?php include './components/alereiaLogoComponent.php' ?>
+                </div>
 
                 <div class="header__news">
                     <ul class="header__news__list">

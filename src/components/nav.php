@@ -1,6 +1,6 @@
 <?php
     $baseUrl = '/alereia/public/';
-    // $baseUrl = '/B2T1/projets/alereia_staging/';
+    // $baseUrl = '/B5T1/projets/alereia_staging/';
     
     $mediaContent = array(
         array(
@@ -31,13 +31,6 @@
             "image" => "images/ReseauxBanniere.png",
             "isLeft" => true
         ),
-        array(
-            "title" => "LES COULISSES DE L'UNIVERS",
-            "category" => "RÉSEAUX & PATREON",
-            "description" => "Suivez l'autrice d'Aleréia sur ses réseaux sociaux Bluesky (avec des liens cliquables) et Mastodon pour découvrir régulièrement des illustrations, croquis et informations inédits sur l'univers et le travail de sa créatrice. Attention, vous risquez aussi d'y trouver des photos de mignons petits chats. Pour les contributeurs Patreon, vous pourrez accéder à certaines informations inédites et/ou en avant-première.",
-            "image" => "images/ReseauxBanniere.png",
-            "isLeft" => true
-        ),
     );
 
     $groupedContent = array();
@@ -57,9 +50,9 @@
 
     $groupedContent = array_values($groupedContent);
 ?>
-<nav class="nav nav-large no-backdrop-blur">
+<nav class="nav nav-large">
     <ul class="container">
-        <li class="link home"><a href="<?= $baseUrl ?>">Home</a></li>
+        <li class="link"><a href="<?= $baseUrl ?>">Accueil</a></li>
         <li class="link"><a href="<?= $baseUrl ?>univers">Univers</a></li>
         <li class="link nav__medias">
             <span class="nav__medias__title">Médias</span>
