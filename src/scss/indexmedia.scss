@@ -2,8 +2,10 @@
     position: relative;
     min-height: 600px;
     padding: 4rem 0;
-    background-size: cover;
-    background-position: top center;
+    background-size: contain;
+    background-color: black;
+    background-repeat: no-repeat;
+    background-position: center center;
 
     @include mq("md") {
         min-height: 800px;

@@ -1,7 +1,7 @@
 import '../scss/styles.scss';
 
 import Universe from './univers';
-import { addGlitchEffect } from './title';
+import { addGlitchEffect } from './glitch';
 import html2canvas from 'html2canvas';
 
 

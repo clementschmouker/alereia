@@ -1,4 +1,5 @@
 import html2canvas from 'html2canvas';
+
 export function addGlitchEffect(element: HTMLElement, sliceCount: number = 5) {
   console.warn('ADDING GLITCH EFFECT', element);
 
@@ -60,17 +61,14 @@ export function addGlitchEffect(element: HTMLElement, sliceCount: number = 5) {
   });
 
   element.addEventListener('mouseleave', () => {
-    glitchContainer.querySelectorAll('.glitch-slice').forEach((slice) => {
-      const s = slice as HTMLDivElement;
-      const animations = s.getAnimations();
-      animations.forEach(anim => anim.cancel());
-    });
-  
+    // Cancel all animations within the glitch container
+    const allAnimations = glitchContainer.getAnimations();
+    allAnimations.forEach(anim => anim.cancel());
+
     glitchContainer.innerHTML = '';
     element.classList.remove('hidden');
   });
 }
-
 
 // Glitch animation for slices
 function glitchAnimate(slice: HTMLDivElement) {
