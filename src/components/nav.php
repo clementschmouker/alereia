@@ -58,7 +58,12 @@
                 <div class="glitch-layer-container"></div>
             </div>
         </li>
-        <li class="link"><a href="<?= $baseUrl ?>univers">Univers</a></li>
+        <li class="link">
+            <div class="glitch-wrapper">
+                <a href="<?= $baseUrl ?>monde" class="glitch-target">Monde</a>
+                <div class="glitch-layer-container"></div>
+            </div>
+        </li>
         <li class="link nav__medias">
             <span class="nav__medias__title">Médias</span>
             <div class="nav__medias__box">
@@ -76,8 +81,18 @@
                 </div>
             </div>
         </li>
-        <li class="link"><a href="<?= $baseUrl ?>news">Actualités</a></li>
-        <li class="link"><a href="<?= $baseUrl ?>magasin">Boutique</a></li>
+        <li class="link">
+            <div class="glitch-wrapper">
+                <a href="<?= $baseUrl ?>news" class="glitch-target">Actualités</a>
+                <div class="glitch-layer-container"></div>
+            </div>
+        </li>
+        <li class="link">
+            <div class="glitch-wrapper">
+                <a href="<?= $baseUrl ?>magasin" class="glitch-target">Boutique</a>
+                <div class="glitch-layer-container"></div>
+            </div>
+        </li>
     </ul>
 </nav>
 
