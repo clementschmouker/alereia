@@ -1,5 +1,7 @@
 import '../scss/styles.scss';
 
+import Universe from './univers';
+
 const navButtonMobile = document.querySelector('.nav-small__button');
 const navMobile = document.querySelector('.nav-small');
 let navMobileOpen = false;
@@ -19,4 +21,9 @@ if (mediaMobileButton && mediaMobile) {
     mediaMobileButton.addEventListener('click', () => {
         mediaMobile.classList.toggle('revealed');
     });
+}
+
+if (document.querySelector('#univers')) {
+    const universe = Universe();
+    universe.init();
 }

@@ -24,7 +24,7 @@
             "title" => "LES COULISSES DE L'UNIVERS",
             "category" => "RÉSEAUX & PATREON",
             "description" => "Suivez l'autrice d'Aleréia sur ses réseaux sociaux Bluesky (avec des liens cliquables) et Mastodon pour découvrir régulièrement des illustrations, croquis et informations inédits sur l'univers et le travail de sa créatrice. Attention, vous risquez aussi d'y trouver des photos de mignons petits chats. Pour les contributeurs Patreon, vous pourrez accéder à certaines informations inédites et/ou en avant-première.",
-            "image" => "images/glitchfond.png"
+            "image" => "images/ReseauxBanniere.png"
         ),
     );
 
@@ -48,10 +48,8 @@
 <nav class="nav nav-large">
     <ul class="container">
         <li class="link"><a href="<?= $baseUrl ?>">Home</a></li>
-        <li class="link"><a href="<?= $baseUrl ?>monde">Monde</a></li>
-        <li class="link"><a href="<?= $baseUrl ?>magasin">Magasin</a></li>
-        <li class="link"><a href="<?= $baseUrl ?>news">News</a></li>
-        <li class="nav__medias">
+        <li class="link"><a href="<?= $baseUrl ?>univers">Univers</a></li>
+        <li class="link nav__medias">
             <span class="nav__medias__title">Médias</span>
             <div class="nav__medias__box">
                 <div class="nav__medias__box__overflow">
@@ -68,6 +66,8 @@
                 </div>
             </div>
         </li>
+        <li class="link"><a href="<?= $baseUrl ?>news">Actualités</a></li>
+        <li class="link"><a href="<?= $baseUrl ?>magasin">Boutique</a></li>
     </ul>
 </nav>
 
