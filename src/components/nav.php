@@ -19,7 +19,7 @@
             "title" => "CARNET DE PRISME",
             "category" => "Littérature",
             "description" => "Aleréia propose aussi tout un panel de textes qui pourront être retrouvés prochainement en ligne sur la plateforme Wattpad. Une première nouvelle a déjà vu le jour, Carnet de Prisme, qui plonge son lecteur dans une histoire centrée autour du personnages de Vangva et ses dilemmes moraux en tant que soldat de Prisme.",
-            "image" => "images/couv.png"
+            "image" => "images/Litban.webp"
         ),
         array(
             "title" => "LES COULISSES DE L'UNIVERS",
