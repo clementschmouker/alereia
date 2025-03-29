@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import gsap from 'gsap';
 
-class Door {
+export default class Door {
     element: THREE.LineSegments;
     sceneInDoor: THREE.Scene;
     renderTarget: THREE.WebGLRenderTarget;
@@ -57,18 +57,17 @@ class Door {
 
     private createRandomCube(): THREE.Mesh {
         const geometry = new THREE.BoxGeometry(
-            Math.random() * 2 + 1, // Largeur aléatoire (1 à 3)
-            Math.random() * 2 + 1, // Hauteur aléatoire (1 à 3)
-            Math.random() * 2 + 1  // Profondeur aléatoire (1 à 3)
+            Math.random() * 2 + 1,
+            Math.random() * 2 + 1,
+            Math.random() * 2 + 1 
         );
         const material = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff });
         const cube = new THREE.Mesh(geometry, material);
 
-        // Positionner les cubes devant la caméra et dans le champ de vision
         cube.position.set(
-            (Math.random() - 0.5) * 4,  // Position X : entre -2 et 2
-            (Math.random() - 0.5) * 4,  // Position Y : entre -2 et 2
-            Math.random() * -5 - 1      // Position Z : entre -1 et -6 (devant la caméra)
+            (Math.random() - 0.5) * 4,
+            (Math.random() - 0.5) * 4,
+            Math.random() * -5 - 1
         );
 
         return cube;
@@ -103,8 +102,8 @@ class Door {
 
     private floatAnimation(): void {
         this.floatAnimationTween = gsap.to(this.element.position, {
-            y: this.element.position.y + 0.2, // Réduire l'amplitude à 0.2
-            duration: 3, // Augmenter la durée à 3 secondes pour un mouvement plus lent
+            y: this.element.position.y + 0.2, // Amplitude
+            duration: 3,
             yoyo: true,
             repeat: -1,
             ease: "sine.inOut"
@@ -123,7 +122,6 @@ class Door {
         this.sceneCamera.aspect = this.renderTarget.width / this.renderTarget.height;
         this.sceneCamera.updateProjectionMatrix();
 
-        // Mise à jour de la caméra à l'intérieur de la porte pour simuler la perspective
         this.updateCameraInDoor(camera);
 
         renderer.setRenderTarget(this.renderTarget);
@@ -134,14 +132,12 @@ class Door {
     }
 
     private updateCameraInDoor(camera: THREE.PerspectiveCamera): void {
-        // Calculer les offsets en fonction de la position de la caméra principale
-        const offsetX = camera.position.x / 10; // Ajuster en fonction de la position X de la caméra principale
-        const offsetY = camera.position.y / 10; // Ajuster en fonction de la position Y de la caméra principale
-        const offsetZ = camera.position.z / 20; // Ajuster en fonction de la position Z de la caméra principale
+        const offsetX = camera.position.x / 10;
+        const offsetY = camera.position.y / 10;
+        const offsetZ = camera.position.z / 20;
     
-        // Positionner la caméra à l'intérieur de la porte avec un léger recul pour éviter de la placer trop près des objets
-        this.sceneCamera.position.set(offsetX, offsetY, -5 + offsetZ);  // Assurer que la caméra est à une distance raisonnable
-        this.sceneCamera.lookAt(0, 0, 0); // La caméra dans la porte regarde toujours le centre de la scène
+        this.sceneCamera.position.set(offsetX, offsetY, -5 + offsetZ); 
+        this.sceneCamera.lookAt(0, 0, 0);
     }
     
     public faceDirection(direction: THREE.Vector3): void {
@@ -161,5 +157,3 @@ class Door {
         Door.existingPositions = Door.existingPositions.filter(pos => pos !== this.element.position);
     }
 }
-
-export default Door;

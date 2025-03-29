@@ -42,13 +42,13 @@ const Universe = () => {
     const createDoors = () => {
         htmlDoors.forEach((htmlDoor, index) => {
             const door = new Door();
-            const offset = 5; // Distance from the pillar
-            const spacing = 10; // Spacing between doors
-            const angleStep = (Math.PI * 2) / htmlDoors.length; // Angle between each door
-            const angle = index * angleStep; // Current angle for the door
+            const offset = 5;
+            const spacing = 10;
+            const angleStep = (Math.PI * 2) / htmlDoors.length;
+            const angle = index * angleStep;
 
             const positionX = Math.cos(angle) * (offset + Math.floor(index / 2) * spacing);
-            const positionY = 5; // Height of the doors
+            const positionY = 5;
             const positionZ = Math.sin(angle) * (offset + Math.floor(index / 2) * spacing);
 
             door.element.position.set(positionX, positionY, positionZ);
@@ -89,7 +89,6 @@ const Universe = () => {
             if (intersects.length > 0) {
                 const doorMesh = intersects.find(intersect => intersect.object instanceof THREE.Mesh)?.object;
                 const door = doors.find(d => d.element === doorMesh?.parent);
-                console.log(door);
                 if (doorMesh && door) {
                     zoomToDoor(doorMesh, door.sceneCamera, door.sceneInDoor);
                 }
@@ -123,13 +122,12 @@ const Universe = () => {
     const zoomToDoor = (door: THREE.Object3D, doorCamera: THREE.PerspectiveCamera, doorScene: THREE.Scene) => {
         isZoomed = true;
 
-        // Arrêter l'animation de flottement pour toutes les portes
         doors.forEach(d => d.pauseFloating());
 
         const targetPosition = new THREE.Vector3();
         door.getWorldPosition(targetPosition);
 
-        const doorNormal = new THREE.Vector3(0, 0, -1); // Default forward direction in local space
+        const doorNormal = new THREE.Vector3(0, 0, -1);
         doorNormal.applyQuaternion(door.getWorldQuaternion(new THREE.Quaternion())).normalize(); // Transform to world space
 
         const frontPosition = targetPosition.clone().addScaledVector(doorNormal, 12);
@@ -201,7 +199,6 @@ const Universe = () => {
                     onComplete: () => {
                         isZoomed = false;
 
-                        // Reprendre l'animation de flottement pour toutes les portes
                         doors.forEach(d => d.resumeFloating());
                     }
                 });
@@ -214,7 +211,7 @@ const Universe = () => {
         isZoomed = true;
 
         cameraToRender = doorCamera;
-        sceneToRender = doorScene; // Utiliser la scène de la porte
+        sceneToRender = doorScene;
 
         const infoBox = document.getElementById('infoBox');
         if (infoBox) {
@@ -224,9 +221,8 @@ const Universe = () => {
     };
 
     const closeInfoDiv = () => {
-        // Revenir à la caméra principale
         cameraToRender = camera;
-        sceneToRender = scene; // Revenir à la scène principale
+        sceneToRender = scene;
 
         const infoBox = document.getElementById('infoBox');
         if (infoBox) {
@@ -241,21 +237,18 @@ const Universe = () => {
         
         if (!isZoomed) rotateCameraWithMouse();
     
-        // Calculer la direction du pilier vers la caméra
         const pillarToCameraDirection = new THREE.Vector3();
         pillar.getWorldPosition(pillarToCameraDirection);
         camera.getWorldPosition(pillarToCameraDirection).sub(pillarToCameraDirection).normalize();
     
-        // Faire en sorte que toutes les portes fassent face à cette direction
         doors.forEach(door => {
             door.faceDirection(pillarToCameraDirection);
             door.update(camera, renderer);
         });
         
-        // Vérifiez que cameraToRender est défini avant de rendre la scène
         if (!cameraToRender) {
             console.error('cameraToRender is undefined. Falling back to main camera.');
-            cameraToRender = camera; // Revenir à la caméra principale en cas de problème
+            cameraToRender = camera;
         }
 
         renderer.render(sceneToRender, cameraToRender);
