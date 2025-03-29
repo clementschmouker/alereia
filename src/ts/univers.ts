@@ -37,8 +37,38 @@ const Universe = () => {
     let doors: Door[] = [];
     const createDoors = () => {
         doors = [];
-        for (let i = 0; i < htmlDoors.length; i++) {
+        const numberOfDoors = 6; // 3 doors on the right, 3 on the left
+
+        const radius = 12; // Set the radius of the circle around the pillar
+        const doorCountPerSide = 3; // Number of doors per side (right and left)
+        const angleStep = Math.PI / (doorCountPerSide + 1); // Calculate angle step for each side (right and left)
+
+        // Right side doors (positive X)
+        for (let i = 0; i < doorCountPerSide; i++) {
+            const angle = angleStep * (i + 1); // Avoid placing a door at the pillar
+            const x = radius * Math.cos(angle); // X coordinate
+            const z = radius * Math.sin(angle); // Z coordinate
+
+            // Avoid the Z position being too close to the front or back of the pillar
+            if (Math.abs(z) < 0.5) continue;
+
             const door = new Door();
+            door.element.position.set(x, Math.random() * 4 + 2, z); // Random Y height
+            scene.add(door.element);
+            doors.push(door);
+        }
+
+        // Left side doors (negative X)
+        for (let i = 0; i < doorCountPerSide; i++) {
+            const angle = Math.PI + angleStep * (i + 1); // Place on the opposite side
+            const x = radius * Math.cos(angle); // X coordinate
+            const z = radius * Math.sin(angle); // Z coordinate
+
+            // Avoid the Z position being too close to the front or back of the pillar
+            if (Math.abs(z) < 0.5) continue;
+
+            const door = new Door();
+            door.element.position.set(x, Math.random() * 4 + 2, z); // Random Y height
             scene.add(door.element);
             doors.push(door);
         }
@@ -80,7 +110,6 @@ const Universe = () => {
     
         document.querySelector('.closeInfoButton')?.addEventListener('click', closeInfoDiv);
     };
-    
 
     let currentLookAt = baseLookAt.clone();
     
@@ -102,20 +131,23 @@ const Universe = () => {
             onUpdate: () => camera.lookAt(currentLookAt)
         });
     };
-    
+
     const zoomToDoor = (door: THREE.Object3D) => {
         isZoomed = true;
-    
+
+        // Arrêter l'animation de flottement pour toutes les portes
+        doors.forEach(d => d.pauseFloating());
+
         const targetPosition = new THREE.Vector3();
         door.getWorldPosition(targetPosition);
-    
-        const doorNormal = new THREE.Vector3();
-        door.getWorldDirection(doorNormal);
-    
-        const frontPosition = targetPosition.clone().addScaledVector(doorNormal, 2);
-        const insidePosition = targetPosition.clone().addScaledVector(doorNormal, 0.1);
+
+        const doorNormal = new THREE.Vector3(0, 0, -1); // Default forward direction in local space
+        doorNormal.applyQuaternion(door.getWorldQuaternion(new THREE.Quaternion())).normalize(); // Transform to world space
+
+        const frontPosition = targetPosition.clone().addScaledVector(doorNormal, 12);
+        const insidePosition = targetPosition.clone().addScaledVector(doorNormal, 0.5);
         const lookAtTarget = targetPosition.clone();
-    
+
         gsap.to(currentLookAt, {
             x: lookAtTarget.x,
             y: lookAtTarget.y,
@@ -124,7 +156,7 @@ const Universe = () => {
             ease: "power2.inOut",
             onUpdate: () => camera.lookAt(currentLookAt),
         });
-    
+
         gsap.to(camera.position, {
             x: frontPosition.x,
             y: frontPosition.y,
@@ -149,14 +181,12 @@ const Universe = () => {
             }
         });
     };
-    
-    
-    
+
     const returnToInitialPosition = () => {
-        const exitPosition = camera.position.clone().add(camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(-2));
-    
+        const exitPosition = camera.position.clone().add(camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(-3));
+
         const pillarLookAt = pillar.position.clone();
-    
+
         gsap.to(camera.position, {
             x: exitPosition.x,
             y: exitPosition.y,
@@ -172,7 +202,7 @@ const Universe = () => {
                     ease: "power2.inOut",
                     onUpdate: () => camera.lookAt(pillarLookAt),
                 });
-    
+
                 gsap.to(currentLookAt, {
                     x: baseLookAt.x,
                     y: baseLookAt.y,
@@ -182,15 +212,14 @@ const Universe = () => {
                     onUpdate: () => camera.lookAt(currentLookAt),
                     onComplete: () => {
                         isZoomed = false;
+
+                        // Reprendre l'animation de flottement pour toutes les portes
+                        doors.forEach(d => d.resumeFloating());
                     }
                 });
             }
         });
     };
-    
-    
-    
-    
 
     // Info Box Functions
     const openInfoDiv = () => {
@@ -216,8 +245,20 @@ const Universe = () => {
         
         if (!isZoomed) rotateCameraWithMouse();
     
+        // Calculer la direction du pilier vers la caméra
+        const pillarToCameraDirection = new THREE.Vector3();
+        pillar.getWorldPosition(pillarToCameraDirection);
+        camera.getWorldPosition(pillarToCameraDirection).sub(pillarToCameraDirection).normalize();
+    
+        // Faire en sorte que toutes les portes fassent face à cette direction
+        doors.forEach(door => {
+            door.faceDirection(pillarToCameraDirection);
+            door.update(camera, renderer);
+        });
+        
         renderer.render(scene, camera);
     };
+    
 
     // Initialization
     const init = () => {
