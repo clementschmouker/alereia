@@ -254,6 +254,15 @@ const Universe = () => {
         renderer.render(sceneToRender, cameraToRender);
     };
     
+    window.addEventListener('resize', () => {
+        doors.forEach(door => {
+            door.updateCameraAspect(); // Mettre à jour l'aspect ratio de chaque porte
+            door.adjustTextureAspect(); // Ajuster l'aspect de la texture
+        });
+        camera.aspect = window.innerWidth / window.innerHeight; // Mettre à jour l'aspect ratio de la caméra principale
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight); // Redimensionner le renderer
+    });
 
     // Initialization
     const init = () => {
