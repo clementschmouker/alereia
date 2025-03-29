@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@types/html2canvas": "^1.0.0",
+    "gsap": "^3.12.7",
     "html2canvas": "^1.4.1",
     "three": "^0.174.0"
   }

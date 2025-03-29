@@ -51,6 +51,13 @@
             <?php endforeach; ?>
         </div>
 
+        <div id="infoBox" style="display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+            <p>Information about this door</p>
+            <button class="closeInfoButton">Close</button>
+        </div>
+
+
+
         <?php include '../components/footer.php'; ?>
 
         <script src="../dist/bundle.js"></script>

@@ -60,7 +60,7 @@
         </li>
         <li class="link">
             <div class="glitch-wrapper">
-                <a href="<?= $baseUrl ?>monde" class="glitch-target">Monde</a>
+                <a href="<?= $baseUrl ?>univers" class="glitch-target">Monde</a>
                 <div class="glitch-layer-container"></div>
             </div>
         </li>
@@ -101,17 +101,17 @@
 
 <nav class="nav nav-small">
     <button class="nav-small__button">
-        <span></span>
+        <span></span> 
         <span></span>
         <span></span>
     </button>
 
     <div class="nav-small__content">
         <ul class="nav-small__content__list">
-            <li><a href="<?= $baseUrl ?>">Home</a></li>
-            <li><a href="<?= $baseUrl ?>monde">Monde</a></li>
-            <li><a href="<?= $baseUrl ?>magasin">Magasin</a></li>
-            <li><a href="<?= $baseUrl ?>news">News</a></li>
+            <li><a href="<?= $baseUrl ?>">Accueil</a></li>
+            <li><a href="<?= $baseUrl ?>univers">Univers</a></li>
+            <li><a href="<?= $baseUrl ?>magasin" class="disabled">Boutique</a></li>
+            <li><a href="<?= $baseUrl ?>news">Actualité</a></li>
             <li class="nav__medias">
                 <span>Médias <div class="nav-small__medias__icon"></div></span>
                 <div class="nav__medias__box">
