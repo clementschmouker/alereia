@@ -7,6 +7,7 @@ import Door from './Door';
 
 const Universe = () => {
     const scene = new THREE.Scene();
+    scene.name = 'MAIN SCENE';
     scene.background = new THREE.Color(0x0a0a0a);
 
     const htmlDoors = document.querySelectorAll('.univers__door');
@@ -24,6 +25,9 @@ const Universe = () => {
     pointLight.position.set(10, 20, 10);
     scene.add(ambientLight, pointLight);
 
+    let cameraToRender = camera;
+    let sceneToRender = scene;
+
     // Load Background Texture
     new THREE.TextureLoader().load('../images/stars.jpg', (texture) => {
         scene.background = texture;
@@ -36,42 +40,21 @@ const Universe = () => {
     // Add Doors
     let doors: Door[] = [];
     const createDoors = () => {
-        doors = [];
-        const numberOfDoors = 6; // 3 doors on the right, 3 on the left
-
-        const radius = 12; // Set the radius of the circle around the pillar
-        const doorCountPerSide = 3; // Number of doors per side (right and left)
-        const angleStep = Math.PI / (doorCountPerSide + 1); // Calculate angle step for each side (right and left)
-
-        // Right side doors (positive X)
-        for (let i = 0; i < doorCountPerSide; i++) {
-            const angle = angleStep * (i + 1); // Avoid placing a door at the pillar
-            const x = radius * Math.cos(angle); // X coordinate
-            const z = radius * Math.sin(angle); // Z coordinate
-
-            // Avoid the Z position being too close to the front or back of the pillar
-            if (Math.abs(z) < 0.5) continue;
-
+        htmlDoors.forEach((htmlDoor, index) => {
             const door = new Door();
-            door.element.position.set(x, Math.random() * 4 + 2, z); // Random Y height
-            scene.add(door.element);
+            const offset = 5; // Distance from the pillar
+            const spacing = 10; // Spacing between doors
+            const angleStep = (Math.PI * 2) / htmlDoors.length; // Angle between each door
+            const angle = index * angleStep; // Current angle for the door
+
+            const positionX = Math.cos(angle) * (offset + Math.floor(index / 2) * spacing);
+            const positionY = 5; // Height of the doors
+            const positionZ = Math.sin(angle) * (offset + Math.floor(index / 2) * spacing);
+
+            door.element.position.set(positionX, positionY, positionZ);
             doors.push(door);
-        }
-
-        // Left side doors (negative X)
-        for (let i = 0; i < doorCountPerSide; i++) {
-            const angle = Math.PI + angleStep * (i + 1); // Place on the opposite side
-            const x = radius * Math.cos(angle); // X coordinate
-            const z = radius * Math.sin(angle); // Z coordinate
-
-            // Avoid the Z position being too close to the front or back of the pillar
-            if (Math.abs(z) < 0.5) continue;
-
-            const door = new Door();
-            door.element.position.set(x, Math.random() * 4 + 2, z); // Random Y height
             scene.add(door.element);
-            doors.push(door);
-        }
+        });
     };
 
     // Raycaster for interactions
@@ -101,10 +84,15 @@ const Universe = () => {
         window.addEventListener('click', () => {
             if (isZoomed) return;
             raycaster.setFromCamera(mouse, camera);
-            const intersects = raycaster.intersectObjects(doors.map(d => d.element));
-    
+            const intersects = raycaster.intersectObjects(doors.map(d => d.element), true);
+
             if (intersects.length > 0) {
-                zoomToDoor(intersects[0].object);
+                const doorMesh = intersects.find(intersect => intersect.object instanceof THREE.Mesh)?.object;
+                const door = doors.find(d => d.element === doorMesh?.parent);
+                console.log(door);
+                if (doorMesh && door) {
+                    zoomToDoor(doorMesh, door.sceneCamera, door.sceneInDoor);
+                }
             }
         });
     
@@ -132,7 +120,7 @@ const Universe = () => {
         });
     };
 
-    const zoomToDoor = (door: THREE.Object3D) => {
+    const zoomToDoor = (door: THREE.Object3D, doorCamera: THREE.PerspectiveCamera, doorScene: THREE.Scene) => {
         isZoomed = true;
 
         // Arrêter l'animation de flottement pour toutes les portes
@@ -175,7 +163,7 @@ const Universe = () => {
                     onComplete: () => {
                         camera.lookAt(lookAtTarget);
                         currentLookAt.copy(lookAtTarget);
-                        openInfoDiv();
+                        openInfoDiv(doorCamera, doorScene);
                     }
                 });
             }
@@ -222,8 +210,12 @@ const Universe = () => {
     };
 
     // Info Box Functions
-    const openInfoDiv = () => {
+    const openInfoDiv = (doorCamera: THREE.PerspectiveCamera, doorScene: THREE.Scene) => {
         isZoomed = true;
+
+        cameraToRender = doorCamera;
+        sceneToRender = doorScene; // Utiliser la scène de la porte
+
         const infoBox = document.getElementById('infoBox');
         if (infoBox) {
             infoBox.style.display = 'block';
@@ -232,6 +224,10 @@ const Universe = () => {
     };
 
     const closeInfoDiv = () => {
+        // Revenir à la caméra principale
+        cameraToRender = camera;
+        sceneToRender = scene; // Revenir à la scène principale
+
         const infoBox = document.getElementById('infoBox');
         if (infoBox) {
             infoBox.style.display = 'none';
@@ -256,7 +252,13 @@ const Universe = () => {
             door.update(camera, renderer);
         });
         
-        renderer.render(scene, camera);
+        // Vérifiez que cameraToRender est défini avant de rendre la scène
+        if (!cameraToRender) {
+            console.error('cameraToRender is undefined. Falling back to main camera.');
+            cameraToRender = camera; // Revenir à la caméra principale en cas de problème
+        }
+
+        renderer.render(sceneToRender, cameraToRender);
     };
     
 

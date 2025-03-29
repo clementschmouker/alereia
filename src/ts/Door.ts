@@ -17,8 +17,7 @@ class Door {
         this.renderTarget = new THREE.WebGLRenderTarget(1024, 1024);
         this.texture = this.loadTexture('path/to/your/texture.jpg'); // Texture principale
         this.plane = this.createPlaneForTexture();
-        this.sceneCamera = this.sceneInDoor.children[0] as THREE.PerspectiveCamera;
-        this.setValidPosition();
+        this.sceneCamera = this.createSceneCamera();
         this.floatAnimation();
     }
 
@@ -31,6 +30,7 @@ class Door {
 
     private createDoorScene(): THREE.Scene {
         const scene = new THREE.Scene();
+        scene.name = 'DOOR SCENE';
         const doorSceneCamera = this.createSceneCamera();
         scene.add(doorSceneCamera);
 
@@ -101,32 +101,10 @@ class Door {
         return plane;
     }
 
-    private setValidPosition(): void {
-        let position: THREE.Vector3;
-        let attempts = 0;
-
-        do {
-            position = new THREE.Vector3(
-                (Math.random() - 0.5) * 20,  
-                Math.random() * 8 + 2,       
-                Math.random() * 10 + 5       
-            );
-            attempts++;
-        } while (this.isOverlapping(position) && attempts < 50);
-
-        this.element.position.copy(position);
-        Door.existingPositions.push(position);
-    }
-
-    private isOverlapping(newPosition: THREE.Vector3): boolean {
-        const minDistance = 2.5;
-        return Door.existingPositions.some(existingPos => existingPos.distanceTo(newPosition) < minDistance);
-    }
-
     private floatAnimation(): void {
         this.floatAnimationTween = gsap.to(this.element.position, {
-            y: this.element.position.y + 0.5,
-            duration: 2,
+            y: this.element.position.y + 0.2, // Réduire l'amplitude à 0.2
+            duration: 3, // Augmenter la durée à 3 secondes pour un mouvement plus lent
             yoyo: true,
             repeat: -1,
             ease: "sine.inOut"
