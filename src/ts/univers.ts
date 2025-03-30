@@ -1,9 +1,9 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import gsap from 'gsap';
 
 import PillarComponent from './pillarComponent';
-import Door from './Door';
+import Door from './door';
 
 const Universe = () => {
     const scene = new THREE.Scene();
@@ -115,9 +115,9 @@ const Universe = () => {
     const rotateCameraWithMouse = () => {
         if (isZoomed) return;
     
-        const rotationAmount = 0.1;
-        const offsetX = -mouse.y * rotationAmount;
-        const offsetY = -mouse.x * rotationAmount;
+        const rotationAmount = 2;
+        const offsetX = mouse.y * rotationAmount;
+        const offsetY = mouse.x * rotationAmount;
     
         const newLookAt = baseLookAt.clone().add(new THREE.Vector3(offsetY, offsetX, 0));
     
@@ -177,7 +177,7 @@ const Universe = () => {
                     ease: "power2.inOut",
                     onStart: () => {
                         if (selectedDoor) {
-                            selectedDoor.triggerCameraDezoom();
+                            selectedDoor.triggerCameraDezoom(finalPosition);
                         }
                     },
                     onUpdate: () => {

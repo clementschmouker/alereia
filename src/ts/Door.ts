@@ -7,6 +7,7 @@ export default class Door {
     renderTarget: THREE.WebGLRenderTarget;
     texture: THREE.Texture;
     plane: THREE.Mesh;
+    syncZ: boolean = true;
     size: {x: number, y: number};
     sceneCamera: THREE.PerspectiveCamera;
     mainCamera: THREE.PerspectiveCamera;
@@ -134,12 +135,12 @@ export default class Door {
         const geometry = new THREE.PlaneGeometry(this.size.x, this.size.y);
 
         // Ajuster les coordonnées UV pour conserver le ratio de la texture
-        geometry.attributes.uv.array = new Float32Array([
+        geometry.setAttribute('uv', new THREE.BufferAttribute(new Float32Array([
             1, 1, // Top-left (inversé en X)
             0, 1, // Top-right (inversé en X)
             1, 0, // Bottom-left (inversé en X)
             0, 0  // Bottom-right (inversé en X)
-        ]);
+        ]), 2));
 
         const material = new THREE.MeshBasicMaterial({
             map: this.renderTarget.texture, // Utiliser directement la texture du WebGLRenderTarget
@@ -176,10 +177,8 @@ export default class Door {
             repeat: -1,
             ease: "sine.inOut",
             onUpdate: () => {
-                // Update the position in world space
                 this.element.getWorldPosition(this.positionInWorld);
                 this.element.getWorldQuaternion(this.element.quaternion); // Get the rotation of the element
-                this.positionInWorld.y = this.element.position.y; // Update the world position Y to match the element's Y position
             }
         });
     }
@@ -195,6 +194,7 @@ export default class Door {
     public syncWithMainCamera(mainCamera: THREE.PerspectiveCamera): void {
         this.sceneCamera.position.x = this.positionInWorld.x;
         this.sceneCamera.position.y = this.positionInWorld.y;
+        this.sceneCamera.position.z = this.positionInWorld.z;
         this.sceneCamera.rotation.copy(mainCamera.rotation);
 
         this.sceneCamera.quaternion.copy(mainCamera.quaternion);
@@ -203,40 +203,29 @@ export default class Door {
 
     public triggerCameraDezoom(finalPosition: THREE.Vector3): void {
         console.log('trigger dezoom');
-        const dezoomTweenAnimation = gsap.to(this.sceneCamera.position, {
+        gsap.to(this.sceneCamera.position, {
             z: this.cameraInitialPosition.z + finalPosition.z,
-            duration: 1,
-            ease: "power2.inOut",
-            onUpdate: () => {
-                this.sceneCamera.updateProjectionMatrix();
-            }
+            duration: 1.5,
+            ease: "power2.Out",
         });
-        dezoomTweenAnimation.resume();
     }
 
     public triggerCameraZoom(): void {
         console.log('trigger zoom');
-        const zoomTweenAnimation = gsap.to(this.sceneCamera.position, {
+        gsap.to(this.sceneCamera.position, {
             z: this.cameraInitialPosition.z - 3,
-            duration: 1,
+            duration: 1.5,
             ease: "power2.inOut",
-            onUpdate: () => {
-                this.sceneCamera.updateProjectionMatrix();
-            }
         });
-        zoomTweenAnimation.resume();
     }
     
     
     public update(camera: THREE.PerspectiveCamera, renderer: THREE.WebGLRenderer): void {
-        // Update the camera aspect ratio and texture aspect ratio
         this.updateCameraAspect();
         this.adjustTextureAspect();
     
-        // Sync the door scene camera with the main camera
         this.syncWithMainCamera(camera);
     
-        // Render the door scene from the perspective of the door's camera
         renderer.setRenderTarget(this.renderTarget);
         renderer.render(this.sceneInDoor, this.sceneCamera);
         renderer.setRenderTarget(null);
