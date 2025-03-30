@@ -90,41 +90,15 @@ export default class Door {
 
     private createPlaneForTexture(): THREE.Mesh {
         const geometry = new THREE.PlaneGeometry(2, 4);
-
-        // Ajuster les coordonnées UV pour conserver le ratio de la texture
-        const aspectRatio = window.innerWidth / window.innerHeight;
-        geometry.attributes.uv.array = new Float32Array([
-            0, 1, // Top-left
-            1, 1, // Top-right
-            0, 0, // Bottom-left
-            1, 0  // Bottom-right
-        ]);
-
         const material = new THREE.MeshBasicMaterial({
             map: this.renderTarget.texture, // Utiliser directement la texture du WebGLRenderTarget
             side: THREE.DoubleSide
         });
-
         const plane = new THREE.Mesh(geometry, material);
         plane.position.set(0, 0, 0.05);
         plane.rotation.y = Math.PI;
         this.element.add(plane);
         return plane;
-    }
-
-    private adjustTextureAspect(): void {
-        const planeAspect = 2 / 4; // Largeur / Hauteur du plan
-        const textureAspect = window.innerWidth / window.innerHeight;
-
-        const repeatX = textureAspect > planeAspect ? planeAspect / textureAspect : 1;
-        const repeatY = textureAspect > planeAspect ? 1 : textureAspect / planeAspect;
-
-        (this.plane.material as THREE.MeshBasicMaterial).map!.repeat.set(repeatX, repeatY);
-        (this.plane.material as THREE.MeshBasicMaterial).map!.offset.set(
-            (1 - repeatX) / 2,
-            (1 - repeatY) / 2
-        );
-        (this.plane.material as THREE.MeshBasicMaterial).map!.needsUpdate = true;
     }
 
     private floatAnimation(): void {
@@ -147,11 +121,37 @@ export default class Door {
 
     public update(camera: THREE.PerspectiveCamera, renderer: THREE.WebGLRenderer): void {
         this.updateCameraAspect(); // Mettre à jour l'aspect ratio à chaque frame
-        this.adjustTextureAspect(); // Ajuster l'aspect de la texture
         this.sceneCamera.updateProjectionMatrix();
 
         // Rendre la scène de la porte dans le WebGLRenderTarget
         renderer.setRenderTarget(this.renderTarget);
+        renderer.render(this.sceneInDoor, this.sceneCamera);
+        renderer.setRenderTarget(null);
+
+        // Pas besoin de mettre à jour manuellement la texture, car elle est déjà liée au WebGLRenderTarget
+
+        // Rendre la scène principale avec la caméra principale
+        renderer.render(this.sceneInDoor, camera);
+    }
+
+    private updateCameraInDoor(camera: THREE.PerspectiveCamera): void {
+        const offsetX = camera.position.x / 10;
+        const offsetY = camera.position.y / 10;
+        const offsetZ = camera.position.z / 20;
+    
+        this.sceneCamera.position.set(offsetX, offsetY, -5 + offsetZ); 
+        this.sceneCamera.lookAt(0, 0, 0);
+    }
+    
+    private updateCameraAspect(): void {
+        const aspectRatio = window.innerWidth / window.innerHeight;
+        this.sceneCamera.aspect = aspectRatio;
+        this.sceneCamera.updateProjectionMatrix();
+    }
+
+    public faceDirection(direction: THREE.Vector3): void {
+        const angle = Math.atan2(direction.x, direction.z);
+        this.element.rotation.y = angle;
     }
 
     public dispose(): void {
