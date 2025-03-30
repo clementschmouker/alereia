@@ -11,7 +11,7 @@ export default class Door {
     sceneCamera: THREE.PerspectiveCamera;
     mainCamera: THREE.PerspectiveCamera;
     public invertZ: boolean = false;
-    public cameraInitialPosition: THREE.Vector3 = new THREE.Vector3(0, 10, 5);
+    public cameraInitialPosition: THREE.Vector3 = new THREE.Vector3(0, -10, 30);
     public positionInWorld: THREE.Vector3 = new THREE.Vector3(0, 0, 0);
     public title: string = 'Door';
     public description: string = 'Door description';
@@ -59,12 +59,13 @@ export default class Door {
 
         // Invert the Y position proportionally to the main camera
         camera.position.y = -this.mainCamera.position.y;
+        camera.position.z = this.element.position.z - this.mainCamera.position.z
 
         return camera;
     }
 
     private addRandomCubes(scene: THREE.Scene): void {
-        const numberOfCubes = Math.floor(Math.random() * 5) + 3;
+        const numberOfCubes = Math.floor(Math.random() * 15) + 3;
         const doorPosition = new THREE.Vector3();
         this.element.getWorldPosition(doorPosition);  // Get the door's world position
         const doorRotation = new THREE.Quaternion();
@@ -169,11 +170,17 @@ export default class Door {
 
     private floatAnimation(): void {
         this.floatAnimationTween = gsap.to(this.element.position, {
-            y: this.element.position.y + 0.2, // Amplitude
+            y: this.element.position.y + 0.01, // Amplitude
             duration: 3,
             yoyo: true,
             repeat: -1,
-            ease: "sine.inOut"
+            ease: "sine.inOut",
+            onUpdate: () => {
+                // Update the position in world space
+                this.element.getWorldPosition(this.positionInWorld);
+                this.element.getWorldQuaternion(this.element.quaternion); // Get the rotation of the element
+                this.positionInWorld.y = this.element.position.y; // Update the world position Y to match the element's Y position
+            }
         });
     }
 
@@ -186,11 +193,38 @@ export default class Door {
     }
 
     public syncWithMainCamera(mainCamera: THREE.PerspectiveCamera): void {
-        this.sceneCamera.position.copy(this.positionInWorld);
+        this.sceneCamera.position.x = this.positionInWorld.x;
+        this.sceneCamera.position.y = this.positionInWorld.y;
         this.sceneCamera.rotation.copy(mainCamera.rotation);
 
         this.sceneCamera.quaternion.copy(mainCamera.quaternion);
         this.sceneCamera.updateProjectionMatrix();
+    }
+
+    public triggerCameraDezoom(finalPosition: THREE.Vector3): void {
+        console.log('trigger dezoom');
+        const dezoomTweenAnimation = gsap.to(this.sceneCamera.position, {
+            z: this.cameraInitialPosition.z + finalPosition.z,
+            duration: 1,
+            ease: "power2.inOut",
+            onUpdate: () => {
+                this.sceneCamera.updateProjectionMatrix();
+            }
+        });
+        dezoomTweenAnimation.resume();
+    }
+
+    public triggerCameraZoom(): void {
+        console.log('trigger zoom');
+        const zoomTweenAnimation = gsap.to(this.sceneCamera.position, {
+            z: this.cameraInitialPosition.z - 3,
+            duration: 1,
+            ease: "power2.inOut",
+            onUpdate: () => {
+                this.sceneCamera.updateProjectionMatrix();
+            }
+        });
+        zoomTweenAnimation.resume();
     }
     
     

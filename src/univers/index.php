@@ -27,6 +27,15 @@
                 "z" => 3
             ),
         ),
+        array(
+            "title" => "Porte 4",
+            "content" => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac ante mollis, fermentum felis nec, fermentum felis.",
+            "position" => array(
+                "x" => 10,
+                "y" => 7,
+                "z" => 3
+            ),
+        )
     )
 ?>
 

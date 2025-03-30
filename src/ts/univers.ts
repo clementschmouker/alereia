@@ -25,14 +25,25 @@ const Universe = () => {
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     const pointLight = new THREE.PointLight(0xffffff, 1);
-    pointLight.position.set(10, 20, 10);
+    pointLight.castShadow = true; // Enable shadow casting for the point light
+    pointLight.shadow.mapSize.width = 512; // Default
+    pointLight.shadow.mapSize.height = 512; // Default
+    pointLight.shadow.camera.near = 0.5; // Default
+    pointLight.shadow.camera.far = 1000; // Default
+    pointLight.position.set(10, 10, 10);
+
     scene.add(ambientLight, pointLight);
+    
+    // Debug pointLight
+    const pointLightHelper = new THREE.PointLightHelper(pointLight, 3);
+    scene.add(pointLightHelper);
 
     let cameraToRender = camera;
     let sceneToRender = scene;
 
     // Load Background Texture
-    new THREE.TextureLoader().load('../images/stars.jpg', (texture) => {
+    new THREE.TextureLoader().load('../images/bgtest.jpg', (texture) => {
+        console.log(texture);
         scene.background = texture;
     });
 
@@ -52,8 +63,6 @@ const Universe = () => {
             const positionX = parseFloat(htmlPositionX);
             const positionY = parseFloat(htmlPositionY);
             const positionZ = parseFloat(htmlPositionZ);
-
-            console.log(htmlPositionX, htmlPositionY, htmlPositionZ);
 
             door.element.position.set(positionX, positionY, positionZ);
             door.positionInWorld = new THREE.Vector3(positionX, positionY, positionZ);
@@ -133,7 +142,7 @@ const Universe = () => {
         const doorNormal = new THREE.Vector3(0, 0, -1);
         doorNormal.applyQuaternion(door.getWorldQuaternion(new THREE.Quaternion())).normalize(); // Transform to world space
     
-        const frontPosition = targetPosition.clone().addScaledVector(doorNormal, 12);
+        const frontPosition = targetPosition.clone().addScaledVector(doorNormal, 3);
         const insidePosition = targetPosition.clone().addScaledVector(doorNormal, 0.5);
         const lookAtTarget = targetPosition.clone();
     
@@ -164,10 +173,15 @@ const Universe = () => {
                     y: secondStepPosition.y,
                     z: secondStepPosition.z,
                     duration: 1,
+                    delay: 0,
                     ease: "power2.inOut",
+                    onStart: () => {
+                        if (selectedDoor) {
+                            selectedDoor.triggerCameraDezoom();
+                        }
+                    },
                     onUpdate: () => {
                         camera.lookAt(currentLookAt);
-    
                         if (selectedDoor) {
                             // Sync sceneCamera movement proportionally for second step
                             const progressInside = (camera.position.z - finalPosition.z) / (secondStepPosition.z - finalPosition.z);
@@ -196,7 +210,7 @@ const Universe = () => {
         const exitPosition = camera.position.clone().add(camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(-3));
 
         const pillarLookAt = pillar.position.clone();
-
+        selectedDoor?.triggerCameraZoom();
         gsap.to(camera.position, {
             x: exitPosition.x,
             y: exitPosition.y,
