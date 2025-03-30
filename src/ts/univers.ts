@@ -17,6 +17,8 @@ const Universe = () => {
     camera.lookAt(0, 0, 0);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Improves shadow quality
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.querySelector('#univers')?.appendChild(renderer.domElement);
 
@@ -41,7 +43,7 @@ const Universe = () => {
     let doors: Door[] = [];
     const createDoors = () => {
         htmlDoors.forEach((htmlDoor, index) => {
-            const door = new Door();
+            const door = new Door({x: 2, y: 4}, camera);
             const offset = 5;
             const spacing = 10;
             const angleStep = (Math.PI * 2) / htmlDoors.length;

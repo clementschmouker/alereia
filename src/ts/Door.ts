@@ -7,11 +7,15 @@ export default class Door {
     renderTarget: THREE.WebGLRenderTarget;
     texture: THREE.Texture;
     plane: THREE.Mesh;
+    size: {x: number, y: number};
     sceneCamera: THREE.PerspectiveCamera;
+    mainCamera: THREE.PerspectiveCamera;
     static existingPositions: THREE.Vector3[] = [];
     private floatAnimationTween: gsap.core.Tween | null = null;
 
-    constructor() {
+    constructor(size: {x: number, y: number}, mainCamera: THREE.PerspectiveCamera) {
+        this.mainCamera = mainCamera;
+        this.size = size;
         this.element = this.createWireframeDoor();
         this.sceneInDoor = this.createDoorScene();
         this.renderTarget = new THREE.WebGLRenderTarget(1920, 1080);
@@ -23,7 +27,7 @@ export default class Door {
     }
 
     private createWireframeDoor(): THREE.LineSegments {
-        const doorGeometry = new THREE.BoxGeometry(2, 4, 0.1);
+        const doorGeometry = new THREE.BoxGeometry(this.size.x, this.size.y, 0.1);
         const edgesGeometry = new THREE.EdgesGeometry(doorGeometry);
         const material = new THREE.LineBasicMaterial({ color: 0x00ff00, linewidth: 2 });
         return new THREE.LineSegments(edgesGeometry, material);
@@ -43,8 +47,15 @@ export default class Door {
 
     private createSceneCamera(): THREE.PerspectiveCamera {
         const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 100); // Augmenter la distance de rendu à 100
-        camera.position.set(0, 0, 5);
+        camera.position.set(0, 10, 5);
+        camera.far = 5000;
         camera.lookAt(0, 0, 0);
+
+
+
+        // Invert the Y position proportionally to the main camera
+        camera.position.y = -this.mainCamera.position.y;
+
         return camera;
     }
 
@@ -52,6 +63,8 @@ export default class Door {
         const numberOfCubes = Math.floor(Math.random() * 5) + 3;
         for (let i = 0; i < numberOfCubes; i++) {
             const cube = this.createRandomCube();
+            cube.castShadow = true; // Enable shadow casting for the cube
+            cube.receiveShadow = true; // Enable shadow receiving for the cube
             scene.add(cube);
         }
     }
@@ -62,8 +75,10 @@ export default class Door {
             Math.random() * 2 + 1,
             Math.random() * 2 + 1 
         );
-        const material = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff });
+        const material = new THREE.MeshPhongMaterial({ color: Math.random() * 0xffffff });
         const cube = new THREE.Mesh(geometry, material);
+        cube.castShadow = true; // Enable shadow casting for the cube
+        cube.receiveShadow = true; // Enable shadow receiving for the cube
 
         cube.position.set(
             (Math.random() - 0.5) * 4,
@@ -75,24 +90,24 @@ export default class Door {
     }
 
     private addLights(scene: THREE.Scene): void {
-        const ambientLight = new THREE.AmbientLight(0xFFFFFF, 2);
+        const ambientLight = new THREE.AmbientLight(0xFFFFFF, 1);
         scene.add(ambientLight);
 
         const pointLight = new THREE.PointLight(0xFFFFFF, 1);
         pointLight.position.set(5, 5, 5);
         scene.add(pointLight);
-    }
 
-    private loadTexture(path: string): THREE.Texture {
-        const loader = new THREE.TextureLoader();
-        return loader.load(path);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(5, 5, 5);
+            directionalLight.castShadow = true;
+            scene.add(directionalLight);
+
     }
 
     private createPlaneForTexture(): THREE.Mesh {
-        const geometry = new THREE.PlaneGeometry(2, 4);
+        const geometry = new THREE.PlaneGeometry(this.size.x, this.size.y);
 
         // Ajuster les coordonnées UV pour conserver le ratio de la texture
-        const aspectRatio = window.innerWidth / window.innerHeight;
         geometry.attributes.uv.array = new Float32Array([
             1, 1, // Top-left (inversé en X)
             0, 1, // Top-right (inversé en X)
@@ -112,7 +127,7 @@ export default class Door {
         return plane;
     }
 
-    private adjustTextureAspect(): void {
+    public adjustTextureAspect(): void {
         const planeAspect = 2 / 4; // Largeur / Hauteur du plan
         const textureAspect = window.innerWidth / window.innerHeight;
 
@@ -146,26 +161,29 @@ export default class Door {
     }
 
     public syncWithMainCamera(mainCamera: THREE.PerspectiveCamera): void {
-        // Synchroniser la position et l'orientation de la caméra de la porte avec la caméra principale
-        this.sceneCamera.position.copy(mainCamera.position);
         this.sceneCamera.quaternion.copy(mainCamera.quaternion);
+        this.sceneCamera.fov = mainCamera.fov;
+        this.sceneCamera.position.y = mainCamera.position.y * -1;
+        this.sceneCamera.rotation.y = mainCamera.rotation.y;
         this.sceneCamera.updateProjectionMatrix();
-    }
 
+    }
+    
+    
     public update(camera: THREE.PerspectiveCamera, renderer: THREE.WebGLRenderer): void {
         this.updateCameraAspect();
         this.adjustTextureAspect();
-
-        // Synchroniser la caméra de la porte avec la caméra principale
         this.syncWithMainCamera(camera);
 
-        // Rendre la scène de la porte dans le WebGLRenderTarget
+    
+        // Rendre la scène intérieure
         renderer.setRenderTarget(this.renderTarget);
         renderer.render(this.sceneInDoor, this.sceneCamera);
         renderer.setRenderTarget(null);
     }
+    
 
-    private updateCameraAspect(): void {
+    public updateCameraAspect(): void {
         const aspectRatio = window.innerWidth / window.innerHeight;
         this.sceneCamera.aspect = aspectRatio;
         this.sceneCamera.updateProjectionMatrix();
