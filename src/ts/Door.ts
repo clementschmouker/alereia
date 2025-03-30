@@ -44,17 +44,18 @@ export default class Door {
     private createDoorScene(): THREE.Scene {
         const scene = new THREE.Scene();
         scene.name = 'DOOR SCENE';
-        const doorSceneCamera = this.createSceneCamera();
-        scene.add(doorSceneCamera);
-
+        
+        scene.fog = new THREE.Fog(0x000000, 5, 15);
+    
         this.addRandomCubes(scene);
         this.addLights(scene);
-
+    
         return scene;
     }
+    
 
     private createSceneCamera(): THREE.PerspectiveCamera {
-        const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 100); // Augmenter la distance de rendu à 100
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100); // Augmenter la distance de rendu à 100
         camera.position.set(this.cameraInitialPosition.x, this.cameraInitialPosition.y, this.cameraInitialPosition.z);
         camera.far = 5000;
 
@@ -68,29 +69,25 @@ export default class Door {
     private addRandomCubes(scene: THREE.Scene): void {
         const numberOfCubes = Math.floor(Math.random() * 15) + 3;
         const doorPosition = new THREE.Vector3();
-        this.element.getWorldPosition(doorPosition);  // Get the door's world position
+        this.element.getWorldPosition(doorPosition);
         const doorRotation = new THREE.Quaternion();
-        this.element.getWorldQuaternion(doorRotation);  // Get the door's world rotation
+        this.element.getWorldQuaternion(doorRotation);
     
-        // Create random cubes around the door position in world space
         for (let i = 0; i < numberOfCubes; i++) {
             const cube = this.createRandomCube();
             
-            // Apply random offset to the cube's position relative to the door
             const offset = new THREE.Vector3(
                 (Math.random() - 0.5) * 4, // Random X offset
                 (Math.random() - 0.5) * 4, // Random Y offset
                 Math.random() * -5 - 1     // Random Z offset
             );
     
-            // Apply the door's rotation to the offset to ensure cubes follow the door's orientation
-            offset.applyQuaternion(doorRotation);  // Rotate the offset to match door's rotation
+            offset.applyQuaternion(doorRotation);
     
-            // Add the offset to the door's world position
             cube.position.add(doorPosition).add(offset);
     
-            cube.castShadow = true;  // Enable shadow casting for the cube
-            cube.receiveShadow = true;  // Enable shadow receiving for the cube
+            cube.castShadow = true;
+            cube.receiveShadow = true;
             scene.add(cube);
         }
     }
@@ -104,8 +101,8 @@ export default class Door {
         );
         const material = new THREE.MeshPhongMaterial({ color: Math.random() * 0xffffff });
         const cube = new THREE.Mesh(geometry, material);
-        cube.castShadow = true; // Enable shadow casting for the cube
-        cube.receiveShadow = true; // Enable shadow receiving for the cube
+        cube.castShadow = true;
+        cube.receiveShadow = true;
 
         cube.position.copy(this.positionInWorld).add(new THREE.Vector3(
             (Math.random() - 0.5) * 4,
@@ -171,14 +168,14 @@ export default class Door {
 
     private floatAnimation(): void {
         this.floatAnimationTween = gsap.to(this.element.position, {
-            y: this.element.position.y + 0.01, // Amplitude
+            y: this.element.position.y + 4,
             duration: 3,
             yoyo: true,
             repeat: -1,
             ease: "sine.inOut",
             onUpdate: () => {
                 this.element.getWorldPosition(this.positionInWorld);
-                this.element.getWorldQuaternion(this.element.quaternion); // Get the rotation of the element
+                this.element.getWorldQuaternion(this.element.quaternion);
             }
         });
     }
@@ -194,7 +191,9 @@ export default class Door {
     public syncWithMainCamera(mainCamera: THREE.PerspectiveCamera): void {
         this.sceneCamera.position.x = this.positionInWorld.x;
         this.sceneCamera.position.y = this.positionInWorld.y;
-        this.sceneCamera.position.z = this.positionInWorld.z;
+        if (this.syncZ) {
+            this.sceneCamera.position.z = this.positionInWorld.z;
+        }
         this.sceneCamera.rotation.copy(mainCamera.rotation);
 
         this.sceneCamera.quaternion.copy(mainCamera.quaternion);

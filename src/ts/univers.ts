@@ -19,15 +19,15 @@ const Universe = () => {
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Improves shadow quality
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.querySelector('#univers')?.appendChild(renderer.domElement);
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     const pointLight = new THREE.PointLight(0xffffff, 1);
-    pointLight.castShadow = true; // Enable shadow casting for the point light
-    pointLight.shadow.mapSize.width = 512; // Default
-    pointLight.shadow.mapSize.height = 512; // Default
+    pointLight.castShadow = true; 
+    pointLight.shadow.mapSize.width = 1920; // Default
+    pointLight.shadow.mapSize.height = 1080; // Default
     pointLight.shadow.camera.near = 0.5; // Default
     pointLight.shadow.camera.far = 1000; // Default
     pointLight.position.set(10, 10, 10);
@@ -42,7 +42,7 @@ const Universe = () => {
     let sceneToRender = scene;
 
     // Load Background Texture
-    new THREE.TextureLoader().load('../images/bgtest.jpg', (texture) => {
+    new THREE.TextureLoader().load('../images/stars.jpg', (texture) => {
         console.log(texture);
         scene.background = texture;
     });
@@ -168,6 +168,7 @@ const Universe = () => {
                 camera.lookAt(currentLookAt);
             },
             onComplete: () => {
+                console.log(camera.position.z, secondStepPosition.z, finalPosition.z);
                 gsap.to(camera.position, {
                     x: secondStepPosition.x,
                     y: secondStepPosition.y,
@@ -182,14 +183,6 @@ const Universe = () => {
                     },
                     onUpdate: () => {
                         camera.lookAt(currentLookAt);
-                        if (selectedDoor) {
-                            // Sync sceneCamera movement proportionally for second step
-                            const progressInside = (camera.position.z - finalPosition.z) / (secondStepPosition.z - finalPosition.z);
-                            selectedDoor.sceneCamera.position.lerpVectors(finalPosition, secondStepPosition, progressInside);
-                            
-                            // Keep rotation in sync
-                            selectedDoor.sceneCamera.quaternion.copy(camera.quaternion);
-                        }
                     },
                     onComplete: () => {
                         if (selectedDoor) {
@@ -210,7 +203,9 @@ const Universe = () => {
         const exitPosition = camera.position.clone().add(camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(-3));
 
         const pillarLookAt = pillar.position.clone();
-        selectedDoor?.triggerCameraZoom();
+        if (selectedDoor) {
+            selectedDoor.triggerCameraZoom();
+        }
         gsap.to(camera.position, {
             x: exitPosition.x,
             y: exitPosition.y,
@@ -236,7 +231,6 @@ const Universe = () => {
                     onUpdate: () => camera.lookAt(currentLookAt),
                     onComplete: () => {
                         isZoomed = false;
-
                         doors.forEach(d => d.resumeFloating());
                     }
                 });
@@ -244,10 +238,10 @@ const Universe = () => {
         });
 
         if (selectedDoor) {
-            gsap.to(selectedDoor.sceneCamera.position, {
-                z: selectedDoor.sceneCamera.position.z - camera.position.z,
-                duration: 1,
-            });
+            // gsap.to(selectedDoor.sceneCamera.position, {
+            //     z: selectedDoor.sceneCamera.position.z - camera.position.z,
+            //     duration: 1,
+            // });
         }
     };
 
