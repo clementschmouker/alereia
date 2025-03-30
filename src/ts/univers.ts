@@ -13,7 +13,7 @@ const Universe = () => {
     const htmlDoors = document.querySelectorAll('.univers__door');
     let selectedDoor: Door | null = null;
 
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000);
     camera.position.set(0, -10, 30);
     camera.lookAt(0, 0, 0);
 
@@ -43,16 +43,17 @@ const Universe = () => {
     // Add Doors
     let doors: Door[] = [];
     const createDoors = () => {
-        htmlDoors.forEach((htmlDoor, index) => {
-            const door = new Door({x: 2, y: 4}, camera);
-            const offset = 5;
-            const spacing = 10;
-            const angleStep = (Math.PI * 2) / htmlDoors.length;
-            const angle = index * angleStep;
+        htmlDoors.forEach((htmlDoor) => {
+            const door = new Door({x: 2, y: 4}, camera, htmlDoor.getAttribute('data-title') || "Default Title", htmlDoor.getAttribute('data-content') || "Default Description");
+            const htmlPositionX = htmlDoor.getAttribute('data-position-x') || "0";
+            const htmlPositionY = htmlDoor.getAttribute('data-position-y') || "0";
+            const htmlPositionZ = htmlDoor.getAttribute('data-position-z') || "0";
 
-            const positionX = Math.cos(angle) * (offset + Math.floor(index / 2) * spacing);
-            const positionY = 5;
-            const positionZ = Math.sin(angle) * (offset + Math.floor(index / 2) * spacing);
+            const positionX = parseFloat(htmlPositionX);
+            const positionY = parseFloat(htmlPositionY);
+            const positionZ = parseFloat(htmlPositionZ);
+
+            console.log(htmlPositionX, htmlPositionY, htmlPositionZ);
 
             door.element.position.set(positionX, positionY, positionZ);
             door.positionInWorld = new THREE.Vector3(positionX, positionY, positionZ);
@@ -64,7 +65,6 @@ const Universe = () => {
     // Raycaster for interactions
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
-    let isHovering = false;
     let isZoomed = false;
     let initialCameraPosition = camera.position.clone();
     const baseLookAt = new THREE.Vector3(0, 5, 0);
@@ -77,8 +77,6 @@ const Universe = () => {
             mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
     
             raycaster.setFromCamera(mouse, camera);
-            const intersects = raycaster.intersectObjects(doors.map(d => d.element));
-            isHovering = intersects.length > 0;
     
             if (!isZoomed) {
                 rotateCameraWithMouse();
@@ -188,12 +186,7 @@ const Universe = () => {
             }
         });
 
-        if (selectedDoor) {
-            gsap.to(selectedDoor?.sceneCamera.position, {
-                z: selectedDoor?.sceneCamera.position.z - camera.position.z,
-                duration: 1,
-            });
-        }
+
     };
     
     
@@ -251,8 +244,17 @@ const Universe = () => {
         cameraToRender = doorCamera;
         sceneToRender = doorScene;
 
-        console.log(doorCamera);
         const infoBox = document.getElementById('infoBox');
+        const infoBoxTitle = document.getElementById('door-title');
+        const infoBoxContent = document.getElementById('door-content');
+        if (selectedDoor) {
+            if (infoBoxContent) {
+                infoBoxContent.innerHTML = selectedDoor.description;
+            }
+            if (infoBoxTitle) {
+                infoBoxTitle.innerHTML = selectedDoor.title;
+            }
+        }
         if (infoBox) {
             infoBox.style.display = 'block';
             infoBox.style.opacity = '1';

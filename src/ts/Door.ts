@@ -10,12 +10,17 @@ export default class Door {
     size: {x: number, y: number};
     sceneCamera: THREE.PerspectiveCamera;
     mainCamera: THREE.PerspectiveCamera;
+    public invertZ: boolean = false;
     public cameraInitialPosition: THREE.Vector3 = new THREE.Vector3(0, 10, 5);
     public positionInWorld: THREE.Vector3 = new THREE.Vector3(0, 0, 0);
+    public title: string = 'Door';
+    public description: string = 'Door description';
     static existingPositions: THREE.Vector3[] = [];
     private floatAnimationTween: gsap.core.Tween | null = null;
 
-    constructor(size: {x: number, y: number}, mainCamera: THREE.PerspectiveCamera) {
+    constructor(size: {x: number, y: number}, mainCamera: THREE.PerspectiveCamera, title: string, description: string) {
+        this.title = title;
+        this.description = description;
         this.mainCamera = mainCamera;
         this.size = size;
         this.element = this.createWireframeDoor();
