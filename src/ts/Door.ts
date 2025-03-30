@@ -14,7 +14,7 @@ export default class Door {
     constructor() {
         this.element = this.createWireframeDoor();
         this.sceneInDoor = this.createDoorScene();
-        this.renderTarget = new THREE.WebGLRenderTarget(1024, 1024);
+        this.renderTarget = new THREE.WebGLRenderTarget(1920, 1080);
         this.texture = this.renderTarget.texture; // Utiliser directement la texture du WebGLRenderTarget
         this.plane = this.createPlaneForTexture();
         this.sceneCamera = this.createSceneCamera();
@@ -42,7 +42,7 @@ export default class Door {
     }
 
     private createSceneCamera(): THREE.PerspectiveCamera {
-        const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 20);
+        const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 100); // Augmenter la distance de rendu à 100
         camera.position.set(0, 0, 5);
         camera.lookAt(0, 0, 0);
         return camera;
@@ -90,15 +90,41 @@ export default class Door {
 
     private createPlaneForTexture(): THREE.Mesh {
         const geometry = new THREE.PlaneGeometry(2, 4);
+
+        // Ajuster les coordonnées UV pour conserver le ratio de la texture
+        const aspectRatio = window.innerWidth / window.innerHeight;
+        geometry.attributes.uv.array = new Float32Array([
+            1, 1, // Top-left (inversé en X)
+            0, 1, // Top-right (inversé en X)
+            1, 0, // Bottom-left (inversé en X)
+            0, 0  // Bottom-right (inversé en X)
+        ]);
+
         const material = new THREE.MeshBasicMaterial({
             map: this.renderTarget.texture, // Utiliser directement la texture du WebGLRenderTarget
             side: THREE.DoubleSide
         });
+
         const plane = new THREE.Mesh(geometry, material);
         plane.position.set(0, 0, 0.05);
         plane.rotation.y = Math.PI;
         this.element.add(plane);
         return plane;
+    }
+
+    private adjustTextureAspect(): void {
+        const planeAspect = 2 / 4; // Largeur / Hauteur du plan
+        const textureAspect = window.innerWidth / window.innerHeight;
+
+        const repeatX = textureAspect > planeAspect ? planeAspect / textureAspect : 1;
+        const repeatY = textureAspect > planeAspect ? 1 : textureAspect / planeAspect;
+
+        (this.plane.material as THREE.MeshBasicMaterial).map!.repeat.set(repeatX, repeatY);
+        (this.plane.material as THREE.MeshBasicMaterial).map!.offset.set(
+            (1 - repeatX) / 2,
+            (1 - repeatY) / 2
+        );
+        (this.plane.material as THREE.MeshBasicMaterial).map!.needsUpdate = true;
     }
 
     private floatAnimation(): void {
@@ -119,30 +145,26 @@ export default class Door {
         this.floatAnimationTween?.resume();
     }
 
-    public update(camera: THREE.PerspectiveCamera, renderer: THREE.WebGLRenderer): void {
-        this.updateCameraAspect(); // Mettre à jour l'aspect ratio à chaque frame
+    public syncWithMainCamera(mainCamera: THREE.PerspectiveCamera): void {
+        // Synchroniser la position et l'orientation de la caméra de la porte avec la caméra principale
+        this.sceneCamera.position.copy(mainCamera.position);
+        this.sceneCamera.quaternion.copy(mainCamera.quaternion);
         this.sceneCamera.updateProjectionMatrix();
+    }
+
+    public update(camera: THREE.PerspectiveCamera, renderer: THREE.WebGLRenderer): void {
+        this.updateCameraAspect();
+        this.adjustTextureAspect();
+
+        // Synchroniser la caméra de la porte avec la caméra principale
+        this.syncWithMainCamera(camera);
 
         // Rendre la scène de la porte dans le WebGLRenderTarget
         renderer.setRenderTarget(this.renderTarget);
         renderer.render(this.sceneInDoor, this.sceneCamera);
         renderer.setRenderTarget(null);
-
-        // Pas besoin de mettre à jour manuellement la texture, car elle est déjà liée au WebGLRenderTarget
-
-        // Rendre la scène principale avec la caméra principale
-        renderer.render(this.sceneInDoor, camera);
     }
 
-    private updateCameraInDoor(camera: THREE.PerspectiveCamera): void {
-        const offsetX = camera.position.x / 10;
-        const offsetY = camera.position.y / 10;
-        const offsetZ = camera.position.z / 20;
-    
-        this.sceneCamera.position.set(offsetX, offsetY, -5 + offsetZ); 
-        this.sceneCamera.lookAt(0, 0, 0);
-    }
-    
     private updateCameraAspect(): void {
         const aspectRatio = window.innerWidth / window.innerHeight;
         this.sceneCamera.aspect = aspectRatio;
