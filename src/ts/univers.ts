@@ -11,6 +11,7 @@ const Universe = () => {
     scene.background = new THREE.Color(0x0a0a0a);
 
     const htmlDoors = document.querySelectorAll('.univers__door');
+    let selectedDoor: Door | null = null;
 
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.set(0, -10, 30);
@@ -54,6 +55,7 @@ const Universe = () => {
             const positionZ = Math.sin(angle) * (offset + Math.floor(index / 2) * spacing);
 
             door.element.position.set(positionX, positionY, positionZ);
+            door.positionInWorld = new THREE.Vector3(positionX, positionY, positionZ);
             doors.push(door);
             scene.add(door.element);
         });
@@ -92,12 +94,13 @@ const Universe = () => {
                 const doorMesh = intersects.find(intersect => intersect.object instanceof THREE.Mesh)?.object;
                 const door = doors.find(d => d.element === doorMesh?.parent);
                 if (doorMesh && door) {
-                    zoomToDoor(doorMesh, door.sceneCamera, door.sceneInDoor);
+                    selectedDoor = door;
+                    zoomToDoor(doorMesh, door.sceneInDoor);
                 }
             }
         });
     
-        document.querySelector('.closeInfoButton')?.addEventListener('click', closeInfoDiv);
+        document.querySelector('.closeInfoButton')?.addEventListener('click', () => closeInfoDiv());
     };
 
     let currentLookAt = baseLookAt.clone();
@@ -121,21 +124,24 @@ const Universe = () => {
         });
     };
 
-    const zoomToDoor = (door: THREE.Object3D, doorCamera: THREE.PerspectiveCamera, doorScene: THREE.Scene) => {
+    const zoomToDoor = (door: THREE.Object3D, doorScene: THREE.Scene) => {
         isZoomed = true;
-
+    
         doors.forEach(d => d.pauseFloating());
-
+    
         const targetPosition = new THREE.Vector3();
         door.getWorldPosition(targetPosition);
-
+    
         const doorNormal = new THREE.Vector3(0, 0, -1);
         doorNormal.applyQuaternion(door.getWorldQuaternion(new THREE.Quaternion())).normalize(); // Transform to world space
-
+    
         const frontPosition = targetPosition.clone().addScaledVector(doorNormal, 12);
         const insidePosition = targetPosition.clone().addScaledVector(doorNormal, 0.5);
         const lookAtTarget = targetPosition.clone();
-
+    
+        const finalPosition = frontPosition.clone();
+        const secondStepPosition = insidePosition.clone();
+    
         gsap.to(currentLookAt, {
             x: lookAtTarget.x,
             y: lookAtTarget.y,
@@ -144,32 +150,55 @@ const Universe = () => {
             ease: "power2.inOut",
             onUpdate: () => camera.lookAt(currentLookAt),
         });
-
+    
         gsap.to(camera.position, {
-            x: frontPosition.x,
-            y: frontPosition.y,
-            z: frontPosition.z,
+            x: finalPosition.x,
+            y: finalPosition.y,
+            z: finalPosition.z,
             duration: 1,
             ease: "power2.inOut",
-            onUpdate: () => camera.lookAt(currentLookAt),
+            onUpdate: () => {
+                camera.lookAt(currentLookAt);
+            },
             onComplete: () => {
                 gsap.to(camera.position, {
-                    x: insidePosition.x,
-                    y: insidePosition.y,
-                    z: insidePosition.z,
+                    x: secondStepPosition.x,
+                    y: secondStepPosition.y,
+                    z: secondStepPosition.z,
                     duration: 1,
                     ease: "power2.inOut",
-                    onUpdate: () => camera.lookAt(currentLookAt),
+                    onUpdate: () => {
+                        camera.lookAt(currentLookAt);
+    
+                        if (selectedDoor) {
+                            // Sync sceneCamera movement proportionally for second step
+                            const progressInside = (camera.position.z - finalPosition.z) / (secondStepPosition.z - finalPosition.z);
+                            selectedDoor.sceneCamera.position.lerpVectors(finalPosition, secondStepPosition, progressInside);
+                            
+                            // Keep rotation in sync
+                            selectedDoor.sceneCamera.quaternion.copy(camera.quaternion);
+                        }
+                    },
                     onComplete: () => {
-                        camera.lookAt(lookAtTarget);
-                        currentLookAt.copy(lookAtTarget);
-                        openInfoDiv(doorCamera, doorScene);
+                        if (selectedDoor) {
+                            openInfoDiv(selectedDoor.sceneCamera, doorScene);
+                        }
                     }
                 });
             }
         });
-    };
 
+        if (selectedDoor) {
+            gsap.to(selectedDoor?.sceneCamera.position, {
+                z: selectedDoor?.sceneCamera.position.z - camera.position.z,
+                duration: 1,
+            });
+        }
+    };
+    
+    
+    
+    
     const returnToInitialPosition = () => {
         const exitPosition = camera.position.clone().add(camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(-3));
 
@@ -206,6 +235,13 @@ const Universe = () => {
                 });
             }
         });
+
+        if (selectedDoor) {
+            gsap.to(selectedDoor.sceneCamera.position, {
+                z: selectedDoor.sceneCamera.position.z - camera.position.z,
+                duration: 1,
+            });
+        }
     };
 
     // Info Box Functions
@@ -215,6 +251,7 @@ const Universe = () => {
         cameraToRender = doorCamera;
         sceneToRender = doorScene;
 
+        console.log(doorCamera);
         const infoBox = document.getElementById('infoBox');
         if (infoBox) {
             infoBox.style.display = 'block';

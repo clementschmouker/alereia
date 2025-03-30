@@ -10,6 +10,8 @@ export default class Door {
     size: {x: number, y: number};
     sceneCamera: THREE.PerspectiveCamera;
     mainCamera: THREE.PerspectiveCamera;
+    public cameraInitialPosition: THREE.Vector3 = new THREE.Vector3(0, 10, 5);
+    public positionInWorld: THREE.Vector3 = new THREE.Vector3(0, 0, 0);
     static existingPositions: THREE.Vector3[] = [];
     private floatAnimationTween: gsap.core.Tween | null = null;
 
@@ -47,11 +49,8 @@ export default class Door {
 
     private createSceneCamera(): THREE.PerspectiveCamera {
         const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 100); // Augmenter la distance de rendu à 100
-        camera.position.set(0, 10, 5);
+        camera.position.set(this.cameraInitialPosition.x, this.cameraInitialPosition.y, this.cameraInitialPosition.z);
         camera.far = 5000;
-        camera.lookAt(0, 0, 0);
-
-
 
         // Invert the Y position proportionally to the main camera
         camera.position.y = -this.mainCamera.position.y;
@@ -61,13 +60,34 @@ export default class Door {
 
     private addRandomCubes(scene: THREE.Scene): void {
         const numberOfCubes = Math.floor(Math.random() * 5) + 3;
+        const doorPosition = new THREE.Vector3();
+        this.element.getWorldPosition(doorPosition);  // Get the door's world position
+        const doorRotation = new THREE.Quaternion();
+        this.element.getWorldQuaternion(doorRotation);  // Get the door's world rotation
+    
+        // Create random cubes around the door position in world space
         for (let i = 0; i < numberOfCubes; i++) {
             const cube = this.createRandomCube();
-            cube.castShadow = true; // Enable shadow casting for the cube
-            cube.receiveShadow = true; // Enable shadow receiving for the cube
+            
+            // Apply random offset to the cube's position relative to the door
+            const offset = new THREE.Vector3(
+                (Math.random() - 0.5) * 4, // Random X offset
+                (Math.random() - 0.5) * 4, // Random Y offset
+                Math.random() * -5 - 1     // Random Z offset
+            );
+    
+            // Apply the door's rotation to the offset to ensure cubes follow the door's orientation
+            offset.applyQuaternion(doorRotation);  // Rotate the offset to match door's rotation
+    
+            // Add the offset to the door's world position
+            cube.position.add(doorPosition).add(offset);
+    
+            cube.castShadow = true;  // Enable shadow casting for the cube
+            cube.receiveShadow = true;  // Enable shadow receiving for the cube
             scene.add(cube);
         }
     }
+    
 
     private createRandomCube(): THREE.Mesh {
         const geometry = new THREE.BoxGeometry(
@@ -80,11 +100,11 @@ export default class Door {
         cube.castShadow = true; // Enable shadow casting for the cube
         cube.receiveShadow = true; // Enable shadow receiving for the cube
 
-        cube.position.set(
+        cube.position.copy(this.positionInWorld).add(new THREE.Vector3(
             (Math.random() - 0.5) * 4,
             (Math.random() - 0.5) * 4,
             Math.random() * -5 - 1
-        );
+        ));
 
         return cube;
     }
@@ -161,26 +181,28 @@ export default class Door {
     }
 
     public syncWithMainCamera(mainCamera: THREE.PerspectiveCamera): void {
-        this.sceneCamera.quaternion.copy(mainCamera.quaternion);
-        this.sceneCamera.fov = mainCamera.fov;
-        this.sceneCamera.position.y = mainCamera.position.y * -1;
-        this.sceneCamera.rotation.y = mainCamera.rotation.y;
-        this.sceneCamera.updateProjectionMatrix();
+        this.sceneCamera.position.copy(this.positionInWorld);
+        this.sceneCamera.rotation.copy(mainCamera.rotation);
 
+        this.sceneCamera.quaternion.copy(mainCamera.quaternion);
+        this.sceneCamera.updateProjectionMatrix();
     }
     
     
     public update(camera: THREE.PerspectiveCamera, renderer: THREE.WebGLRenderer): void {
+        // Update the camera aspect ratio and texture aspect ratio
         this.updateCameraAspect();
         this.adjustTextureAspect();
-        this.syncWithMainCamera(camera);
-
     
-        // Rendre la scène intérieure
+        // Sync the door scene camera with the main camera
+        this.syncWithMainCamera(camera);
+    
+        // Render the door scene from the perspective of the door's camera
         renderer.setRenderTarget(this.renderTarget);
         renderer.render(this.sceneInDoor, this.sceneCamera);
         renderer.setRenderTarget(null);
     }
+    
     
 
     public updateCameraAspect(): void {
@@ -198,9 +220,7 @@ export default class Door {
         this.texture.dispose();
         this.renderTarget.dispose();
         this.element.geometry.dispose();
-        this.element.material.dispose();
         this.plane.geometry.dispose();
-        this.plane.material.dispose();
 
         this.element.parent?.remove(this.element);
         Door.existingPositions = Door.existingPositions.filter(pos => pos !== this.element.position);
