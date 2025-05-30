@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-export default class DoorComponent {
+export default class PillarComponent {
     public element: THREE.Mesh;
 
     constructor() {

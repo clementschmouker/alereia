@@ -4,6 +4,7 @@ import gsap from 'gsap';
 
 import PillarComponent from './pillarComponent';
 import Door from './door';
+import * as CameraUtils from 'three/examples/jsm/utils/CameraUtils';
 
 const Universe = () => {
     const scene = new THREE.Scene();
@@ -42,8 +43,7 @@ const Universe = () => {
     let sceneToRender = scene;
 
     // Load Background Texture
-    new THREE.TextureLoader().load('../images/stars.jpg', (texture) => {
-        console.log(texture);
+    new THREE.TextureLoader().load('../images/bgunivers.jpg', (texture) => {
         scene.background = texture;
     });
 
@@ -55,7 +55,12 @@ const Universe = () => {
     let doors: Door[] = [];
     const createDoors = () => {
         htmlDoors.forEach((htmlDoor) => {
-            const door = new Door({x: 2, y: 4}, camera, htmlDoor.getAttribute('data-title') || "Default Title", htmlDoor.getAttribute('data-content') || "Default Description");
+            const door = new Door(
+                {x: 2, y: 4},
+                camera, htmlDoor.getAttribute('data-title') || "Default Title",
+                htmlDoor.getAttribute('data-content') || "Default Description",
+                htmlDoor.getAttribute('data-image') || ''
+            );
             const htmlPositionX = htmlDoor.getAttribute('data-position-x') || "0";
             const htmlPositionY = htmlDoor.getAttribute('data-position-y') || "0";
             const htmlPositionZ = htmlDoor.getAttribute('data-position-z') || "0";
@@ -102,7 +107,7 @@ const Universe = () => {
                 const door = doors.find(d => d.element === doorMesh?.parent);
                 if (doorMesh && door) {
                     selectedDoor = door;
-                    zoomToDoor(doorMesh, door.sceneInDoor);
+                    zoomToDoor(doorMesh, door);
                 }
             }
         });
@@ -131,23 +136,20 @@ const Universe = () => {
         });
     };
 
-    const zoomToDoor = (door: THREE.Object3D, doorScene: THREE.Scene) => {
+    const zoomToDoor = (doorPlane: THREE.Object3D, door: Door) => {
         isZoomed = true;
     
         doors.forEach(d => d.pauseFloating());
     
         const targetPosition = new THREE.Vector3();
-        door.getWorldPosition(targetPosition);
+        doorPlane.getWorldPosition(targetPosition);
     
         const doorNormal = new THREE.Vector3(0, 0, -1);
-        doorNormal.applyQuaternion(door.getWorldQuaternion(new THREE.Quaternion())).normalize(); // Transform to world space
+        doorNormal.applyQuaternion(doorPlane.getWorldQuaternion(new THREE.Quaternion())).normalize();
     
         const frontPosition = targetPosition.clone().addScaledVector(doorNormal, 3);
         const insidePosition = targetPosition.clone().addScaledVector(doorNormal, 0.5);
         const lookAtTarget = targetPosition.clone();
-    
-        const finalPosition = frontPosition.clone();
-        const secondStepPosition = insidePosition.clone();
     
         gsap.to(currentLookAt, {
             x: lookAtTarget.x,
@@ -159,41 +161,37 @@ const Universe = () => {
         });
     
         gsap.to(camera.position, {
-            x: finalPosition.x,
-            y: finalPosition.y,
-            z: finalPosition.z,
+            x: frontPosition.x,
+            y: frontPosition.y,
+            z: frontPosition.z,
             duration: 1,
             ease: "power2.inOut",
             onUpdate: () => {
                 camera.lookAt(currentLookAt);
             },
             onComplete: () => {
-                console.log(camera.position.z, secondStepPosition.z, finalPosition.z);
                 gsap.to(camera.position, {
-                    x: secondStepPosition.x,
-                    y: secondStepPosition.y,
-                    z: secondStepPosition.z,
+                    x: insidePosition.x,
+                    y: insidePosition.y,
+                    z: insidePosition.z,
                     duration: 1,
-                    delay: 0,
                     ease: "power2.inOut",
-                    onStart: () => {
-                        if (selectedDoor) {
-                            selectedDoor.triggerCameraDezoom(finalPosition);
-                        }
-                    },
                     onUpdate: () => {
                         camera.lookAt(currentLookAt);
+
+                        // Synchronize the door camera with the main camera during the transition
+                        if (selectedDoor) {
+                            selectedDoor.syncWithMainCamera(camera);
+                        }
                     },
                     onComplete: () => {
                         if (selectedDoor) {
-                            openInfoDiv(selectedDoor.sceneCamera, doorScene);
+                            openInfoDiv(selectedDoor.sceneCamera, door.sceneInDoor);
                         }
                     }
                 });
             }
         });
-
-
     };
     
     
@@ -236,13 +234,6 @@ const Universe = () => {
                 });
             }
         });
-
-        if (selectedDoor) {
-            // gsap.to(selectedDoor.sceneCamera.position, {
-            //     z: selectedDoor.sceneCamera.position.z - camera.position.z,
-            //     duration: 1,
-            // });
-        }
     };
 
     // Info Box Functions
@@ -253,8 +244,10 @@ const Universe = () => {
         sceneToRender = doorScene;
 
         const infoBox = document.getElementById('infoBox');
-        const infoBoxTitle = document.getElementById('door-title');
-        const infoBoxContent = document.getElementById('door-content');
+        const infoBoxTitle = document.getElementById('infoBox-title');
+        const infoBoxContent = document.getElementById('infoBox-content');
+        const infoBoxImage = document.getElementById('infoBox-image');
+
         if (selectedDoor) {
             if (infoBoxContent) {
                 infoBoxContent.innerHTML = selectedDoor.description;
@@ -262,9 +255,13 @@ const Universe = () => {
             if (infoBoxTitle) {
                 infoBoxTitle.innerHTML = selectedDoor.title;
             }
+            if (infoBoxImage) {
+                console.log(selectedDoor);
+                infoBoxImage.setAttribute('src', '../images/' + selectedDoor.image);
+            }
         }
         if (infoBox) {
-            infoBox.style.display = 'block';
+            infoBox.style.display = 'flex';
             infoBox.style.opacity = '1';
         }
     };
@@ -292,6 +289,9 @@ const Universe = () => {
     
         doors.forEach(door => {
             door.faceDirection(pillarToCameraDirection);
+            door.updateCorners();
+            const { bottomLeft, bottomRight, topLeft } = door.corners;
+            CameraUtils.frameCorners(door.sceneCamera, bottomLeft, bottomRight, topLeft, false);
             door.update(camera, renderer);
         });
         

@@ -2,28 +2,35 @@ import * as THREE from 'three';
 import gsap from 'gsap';
 
 export default class Door {
-    element: THREE.LineSegments;
-    sceneInDoor: THREE.Scene;
-    renderTarget: THREE.WebGLRenderTarget;
-    texture: THREE.Texture;
-    plane: THREE.Mesh;
-    syncZ: boolean = true;
-    size: {x: number, y: number};
-    sceneCamera: THREE.PerspectiveCamera;
-    mainCamera: THREE.PerspectiveCamera;
+    public element: THREE.LineSegments;
+    public sceneInDoor: THREE.Scene;
+    public renderTarget: THREE.WebGLRenderTarget;
+    public texture: THREE.Texture;
+    public plane: THREE.Mesh;
+    public syncZ: boolean = true;
+    public size: {x: number, y: number};
+    public sceneCamera: THREE.PerspectiveCamera;
+    public mainCamera: THREE.PerspectiveCamera;
     public invertZ: boolean = false;
     public cameraInitialPosition: THREE.Vector3 = new THREE.Vector3(0, -10, 30);
     public positionInWorld: THREE.Vector3 = new THREE.Vector3(0, 0, 0);
     public title: string = 'Door';
     public description: string = 'Door description';
+    public image: string = '';
     static existingPositions: THREE.Vector3[] = [];
+    public corners = {
+        topLeft: new THREE.Vector3(),
+        bottomRight: new THREE.Vector3(),
+        bottomLeft: new THREE.Vector3(),
+    };
     private floatAnimationTween: gsap.core.Tween | null = null;
 
-    constructor(size: {x: number, y: number}, mainCamera: THREE.PerspectiveCamera, title: string, description: string) {
+    constructor(size: {x: number, y: number}, mainCamera: THREE.PerspectiveCamera, title: string, description: string, image: string) {
         this.title = title;
         this.description = description;
         this.mainCamera = mainCamera;
         this.size = size;
+        this.image = image;
         this.element = this.createWireframeDoor();
         this.sceneInDoor = this.createDoorScene();
         this.renderTarget = new THREE.WebGLRenderTarget(1920, 1080);
@@ -44,20 +51,22 @@ export default class Door {
     private createDoorScene(): THREE.Scene {
         const scene = new THREE.Scene();
         scene.name = 'DOOR SCENE';
+
+        // new THREE.TextureLoader().load("../images/imgbguniversnopillar.jpg", (texture) => {
+        //     scene.background = texture;
+        // });
         
-        scene.fog = new THREE.Fog(0x000000, 5, 15);
+        scene.fog = new THREE.Fog(0x000000, 5, 100);
     
         this.addRandomCubes(scene);
         this.addLights(scene);
     
         return scene;
-    }
-    
+    }    
 
     private createSceneCamera(): THREE.PerspectiveCamera {
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100); // Augmenter la distance de rendu à 100
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000); // Augmenter la distance de rendu à 100
         camera.position.set(this.cameraInitialPosition.x, this.cameraInitialPosition.y, this.cameraInitialPosition.z);
-        camera.far = 5000;
 
         // Invert the Y position proportionally to the main camera
         camera.position.y = -this.mainCamera.position.y;
@@ -67,7 +76,7 @@ export default class Door {
     }
 
     private addRandomCubes(scene: THREE.Scene): void {
-        const numberOfCubes = Math.floor(Math.random() * 15) + 3;
+        const numberOfCubes = Math.floor(Math.random() * 55) + 3;
         const doorPosition = new THREE.Vector3();
         this.element.getWorldPosition(doorPosition);
         const doorRotation = new THREE.Quaternion();
@@ -189,24 +198,27 @@ export default class Door {
     }
 
     public syncWithMainCamera(mainCamera: THREE.PerspectiveCamera): void {
-        this.sceneCamera.position.x = this.positionInWorld.x;
-        this.sceneCamera.position.y = this.positionInWorld.y;
-        if (this.syncZ) {
-            this.sceneCamera.position.z = this.positionInWorld.z;
-        }
-        this.sceneCamera.rotation.copy(mainCamera.rotation);
+        const doorWorldPos = new THREE.Vector3();
+        this.element.getWorldPosition(doorWorldPos);
 
+        // Calculate the offset between the main camera and the door
+        const offset = new THREE.Vector3().subVectors(mainCamera.position, doorWorldPos);
+
+        // Mirror the main camera's position relative to the door
+        const mirroredPosition = new THREE.Vector3().copy(doorWorldPos).sub(offset);
+        this.sceneCamera.position.copy(mirroredPosition);
+
+        // Align the door camera's rotation with the main camera
         this.sceneCamera.quaternion.copy(mainCamera.quaternion);
-        this.sceneCamera.updateProjectionMatrix();
-    }
 
-    public triggerCameraDezoom(finalPosition: THREE.Vector3): void {
-        console.log('trigger dezoom');
-        gsap.to(this.sceneCamera.position, {
-            z: this.cameraInitialPosition.z + finalPosition.z,
-            duration: 1.5,
-            ease: "power2.Out",
-        });
+        // Synchronize the near, far, FOV, and aspect ratio
+        this.sceneCamera.near = mainCamera.near;
+        this.sceneCamera.far = mainCamera.far;
+        this.sceneCamera.fov = mainCamera.fov;
+        this.sceneCamera.aspect = mainCamera.aspect;
+
+        // Update the projection matrix to reflect the changes
+        this.sceneCamera.updateProjectionMatrix();
     }
 
     public triggerCameraZoom(): void {
@@ -217,14 +229,25 @@ export default class Door {
             ease: "power2.inOut",
         });
     }
+
+    public updateCorners = (): void => {
+        if (this.plane.geometry.boundingBox) {
+            const { min, max } = this.plane.geometry.boundingBox;
+            this.plane.localToWorld(this.corners.bottomLeft.set(min.x, min.y, 0));
+            this.plane.localToWorld(this.corners.topLeft.set(min.x, max.y, 0));
+            this.plane.localToWorld(this.corners.bottomRight.set(min.x, max.y, 0));
+        }
+    }
     
     
     public update(camera: THREE.PerspectiveCamera, renderer: THREE.WebGLRenderer): void {
         this.updateCameraAspect();
         this.adjustTextureAspect();
-    
+
+        // Synchronize the door camera with the main camera
         this.syncWithMainCamera(camera);
-    
+
+        // Render the door's scene into the render target
         renderer.setRenderTarget(this.renderTarget);
         renderer.render(this.sceneInDoor, this.sceneCamera);
         renderer.setRenderTarget(null);

@@ -35,7 +35,7 @@ if (universeElement) {
 const glitchElements = document.querySelectorAll('.glitch-target');
 if (glitchElements) {
     glitchElements.forEach((element) => {
-        addGlitchEffect(element as HTMLElement);
+        // addGlitchEffect(element as HTMLElement);
     });
 }
 
@@ -43,9 +43,8 @@ if (glitchElements) {
 const categories = document.querySelectorAll('.nav__medias__box__category');
 
 categories.forEach(category => {
-    const toggle = category.querySelector('.category-toggle');
-    if (toggle) {
-        toggle.addEventListener('click', (e) => {
+    if (category) {
+        category.addEventListener('click', (e) => {
             e.stopPropagation();
             categories.forEach((el) => {
                 el.classList.add('collapsed');
