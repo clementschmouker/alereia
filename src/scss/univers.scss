@@ -1,0 +1,34 @@
+#univers {
+    width: 100vh;
+    height: 100vh;
+
+    background-image: url('../images/stars.jpg');
+    background-size: cover;
+}
+
+#infoBox {
+    display: none;
+    position: fixed;
+    align-items: center;
+    justify-content: flex-end;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+
+    &-image {
+        position: absolute;
+        top: -50%;
+        left: 0;
+        width: 50%;
+    }
+}
+
+.infoBox {
+    &__content {
+        padding: 20px;
+        background-color: rgba(0, 0, 0, 0.9);
+        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+        width: 50%;
+    }
+}

@@ -32,6 +32,13 @@
         height: 100%;
 
         .link {
+
+            @include mq("md") {
+                height: 100%;
+                display: flex;
+                align-items: center;
+            }
+
             &:not(:last-child) {
                 margin-right: 1rem;
             }
@@ -47,18 +54,25 @@
                 font-size: 1.25rem;
                 font-weight: 500;
                 font-family: 'Tablon', sans-serif;
+
+                &.disabled {
+                    color: #aaa;
+                    text-decoration: line-through;
+                    pointer-events: none;
+                }
+            }
+
+            &.home a {
+                display: flex;
+                align-items: center;
+                width: 100px;
+                height: 80px;
             }
         }
     }
 
     &__medias {
         position: relative;
-        
-        @include mq("md") {
-            height: 100%;
-            display: flex;
-            align-items: center;
-        }
 
         span {
             color: white;
@@ -95,28 +109,28 @@
             transform: translateY(30px);
             opacity: 0;
             pointer-events: none;
+            height: 300px !important;
 
             transition: all .3s ease-out;
 
-            &::before {
-                content: '';
-                position: absolute;
-                top: -20px;
-                right: 5%;
-                transform: translateX(-50%);
-                border-width: 10px;
-                border-style: solid;
-                border-color: transparent transparent $dark-color transparent;
-            }
+            &__overflow {  
+                width: 100%;
+                height: 100%;          
+                overflow-y: scroll;
+                overflow-x: hidden;
+                &::-webkit-scrollbar {
+                    display: none;
+                }
 
-            &__overflow {            
-                overflow: hidden;
+                & {
+                    -ms-overflow-style: none;  /* IE and Edge */
+                    scrollbar-width: none;  /* Firefox */
+                }
             }
 
             &__category {
                 opacity: 0;
                 transform: translateX(100%);
-                margin-bottom: 1rem;
                 font-family: 'Tablon';
                 pointer-events: none;
 
@@ -130,7 +144,6 @@
 
                 h2 {
                     margin: 0;
-                    margin-bottom: 1rem;
                     padding: 1rem;
                     background: $dark-color;
                     color: white;
@@ -138,10 +151,14 @@
                 }
 
                 li {
-                    margin-top: 1rem;
+                    display: flex;
+                    align-items: center;
+                    height: 50px;
                 }
             
                 a {
+                    display: flex;
+                    align-items: center;
                     padding: 1rem;
                     padding-left: 2rem;
                     color: black !important;
@@ -191,17 +208,6 @@
         }
     }
 
-    &__medias__icon {
-        display: inline-block;
-        background-image: url('../images/arrow-down.svg');
-        width: 20px;
-        height: 20px;
-        background-size: contain;
-
-        transform: rotate(0deg);
-        transition: all .3s ease-out;
-    }
-
     .nav__medias__box {
         display: block;
         position: absolute;
@@ -217,6 +223,7 @@
 
         @include mq("md") {
             top: 3rem;
+            height: 100px;
         }
     }
 
@@ -335,5 +342,39 @@
                 }
             }
         }
+    }
+}
+
+.category-toggle {
+    display: inline-block;
+    background-image: url('../images/arrow.png');
+    width: 16px;
+    height: 16px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-left: 0.5rem;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    transform: rotate(90deg);
+}
+
+.collapsed .category-toggle {
+    transform: rotate(0deg);
+}
+
+.nav__medias__box__category {
+    cursor: pointer;
+
+    &.collapsed ul {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    ul {
+        max-height: 1000px; // enough for most content
+        opacity: 1;
+        transition: all 0.3s ease;
     }
 }

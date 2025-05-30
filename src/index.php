@@ -1,22 +1,6 @@
 <?php 
-
-    $news = array(
-        array(
-            "title" => "Inauguration du site",
-            "date" => "14/03/2025",
-            "content" => "Le site fait peau neuve ! Explorez les recoins d'Aleréia et de ses personnages et découvrez les différents aspects de cet univers transmédia haut en couleurs."
-        ),
-        array(
-            "title" => "Nos réseaux sociaux",
-            "date" => "14/03/2025",
-            "content" => "Suivez-nous sur les réseaux sociaux ! Vous pourrez retrouver Aleréia sur les réseaux Bluesky et Mastodon, ainsi que toutes les musiques produites pour l'univers sur sa propre chaîne Youtube dédiée."
-        ),
-        array(
-            "title" => "Explorez le monde",
-            "date" => "14/03/2025",
-            "content" => "Découvrez le worldbuilding de l'univers à travers une expérience interactive inédite directement sur son site web ! Ouvrez les différentes portes et laissez-vous emporter par une étrange voix numérique..."
-        )
-    )
+    include './MOCK_medias.php';
+    include './MOCK_news.php';
 ?>
 
 <!DOCTYPE html>
@@ -32,18 +16,20 @@
 
         <header class="header">
             <div class="container">
-                <h1>Aleréia</h1>
-
+                <div class="glitch-wrapper">
+                    <h1 class="glitch-target">Aleréia</h1>
+                    <div class="glitch-layer-container"></div>
+                </div>
                 <div class="header__news">
                     <ul class="header__news__list">
-                        <?php foreach ($news as $new) { ?>
+                        <?php foreach (array_slice($news, -3) as $new) { ?>
                             <li class="header__news__card card">
-                                <a href="./news">
+                                <a href="./news?news=<?= $new['url'] ?>">
                                     <div class="card__header">
                                         <h2 class="card__title"><?php echo $new["title"]; ?></h2>
                                         <p class="card__date"><?php echo $new["date"]; ?></p>
                                     </div>
-                                    <p class="card__content"><?php echo $new["content"]; ?></p>
+                                    <p class="card__content"><?php echo $new["short_description"]; ?></p>
                                 </a>
                             </li>
                         <?php } ?>
@@ -58,11 +44,11 @@
                     $content = (object) $content;
                     include './components/indexmedia.php';
                 }
-            ?> 
+            ?>
+
         </main>
 
         <?php include './components/footer.php'; ?>
-
         <script src="dist/bundle.js"></script>
     </body>
 </html> 

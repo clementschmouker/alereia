@@ -1,68 +1,9 @@
 <?php
-    // Mocked datas
-    $title = "Good news everyone !";
-    $author = 'Gaëlle Gaban';
-    $date = '01/01/2021';
-    $content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.s.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.s.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.s.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.s.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.s.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.s.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.s.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.
-    . Nullam ac ante mollis, fermentum felis nec, fermentum felis.";
+    include '../MOCK_medias.php';
 
-    $articles = array(
-        array(
-            "title" => "Article 2",
-            "date" => "01/01/2021",
-            "author" => "John Doe",
-        ),
-        array(
-            "title" => "Article 3",
-            "date" => "01/01/2021",
-            "author" => "Clément",
-        ),
-        array(
-            "title" => "Article 4",
-            "date" => "01/01/2021",
-            "author" => "Gaëlle",
-        )
-    )
+    include '../MOCK_news.php';
+
+    $currentNews = $news[$_GET['news']];
 ?>
 
 <!DOCTYPE html>
@@ -80,21 +21,21 @@
             <aside>
                 <h2>Articles</h2>
                 <ul>
-                    <?php foreach($articles as $article): ?>
+                    <?php foreach($news as $new): ?>
                         <li>
-                            <a href="#">
-                                <h3><?php echo $article["title"] . " - " . $article["date"]; ?></h3>
-                                <span><?php echo $article["author"]; ?></span>        
+                            <a href="?news=<?= $new['url'] ?>">
+                                <h3><?php echo $new["title"] . " - " . $new["date"]; ?></h3>
+                                <span><?php echo $new["author"]; ?></span>        
                             </a>
                         </li>
                     <?php endforeach; ?>
                 </ul>
             </aside>
             <section class="news-page__content">
-                <h2 class="news-page__content__title"><?php echo $title; ?></h2>
-                <span><?php echo $author. ' - '. $date; ?></span>
+                <h2 class="news-page__content__title"><?php echo $currentNews['title']; ?></h2>
+                <span><?php echo $currentNews['author']. ' - '. $currentNews['date']; ?></span>
                 <div class="news-page__content__container">
-                    <?php echo $content; ?>
+                    <?php echo $currentNews['long_text']; ?>
                 </div>
             </section>
         </main>

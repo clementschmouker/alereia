@@ -1,7 +1,6 @@
 <?php
-    $title = "SI J'OUVRE LES YEUX";
-    $description = "La chaîne Youtube d'Aleréia présente des chansons originales produites par plusieurs artistes de talents. Ces musiques, introspectives, proposent d'explorer les pensées profondes de certains personnages et d'apporter des éléments de narration supplémentaires à l'univers, le tout accompagné de visuels animés.";
-    $backgroundUrl = "../images/MediaMusique.webp";
+    include '../MOCK_medias.php';
+    include '../MOCK_news.php';
 ?>
 
 <!DOCTYPE html>
@@ -14,15 +13,30 @@
     <body class="media-page">
         <?php include '../components/nav.php'; ?>
 
+        <?php
+            $media = $_GET['media'];
+            if (!isSet($media)) {
+                header("Location: ../index.php");
+                exit();
+            }
+            echo $mediaContent[$media]['title'];
+            $title = $mediaContent[$media]['title'];
+            $description = $mediaContent[$media]['description'];
+            $backgroundUrl = $mediaContent[$media]['background_url'];
+        ?>
+
         <main style="background-image: url('<?= $backgroundUrl ?>');">
             <div class="container">
                 <div class="media-page__block">
                     <h1><?= $title ?></h1>
                     <p><?= $description ?></p>
-                    <a href="#" class="link-button">
-                        Accéder
-                        <span class="link-button__icon"></span>
-                    </a>
+                    <div class="glitch-wrapper">
+                        <a href="<?= $mediaContent[$media]['external_url'] ?>" class="glitch-target link-button">
+                            Accéder
+                            <span class="link-button__icon"></span>
+                        </a>
+                        <div class="glitch-layer-container"></div>
+                    </div>
                 </div>
             </div>
         </main>

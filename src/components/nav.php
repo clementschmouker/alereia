@@ -1,34 +1,11 @@
 <?php
     $baseUrl = '/alereia/public/';
-    
-    $mediaContent = array(
-        array(
-            "title" => "ÉPISODE PILOTE",
-            "category" => "Jeux vidéo",
-            "description" => "L'épisode pilote (remplacer par son nom définitif plus tard) est un jeu vidéo narratif très court qui vous plonge directement dans le quotidien de personnages centraux d'Aleréia, le jour d'une mission particulière. Découvrez comment Vangva, Ilyem et Syel évoluent dans ce monde qui leur semble hostile, avec un premier aperçu des pouvoirs spéciaux dont ils ont hérité.<br><br>Vous pouvez y jouer directement sur le site, sans besoin de téléchargement.",
-            "image" => "images/image.png"
-        ),
-        array(
-            "title" => "SI J'OUVRE LES YEUX",
-            "category" => "MUSIQUES",
-            "description" => "La chaîne Youtube d'Aleréia présente des chansons originales produites par plusieurs artistes de talents. Ces musiques, introspectives, proposent d'explorer les pensées profondes de certains personnages et d'apporter des éléments de narration supplémentaires à l'univers, le tout accompagné de visuels animés.",
-            "image" => "images/SyelGlitch.png"
-        ),
-        array(
-            "title" => "CARNET DE PRISME",
-            "category" => "Littérature",
-            "description" => "Aleréia propose aussi tout un panel de textes qui pourront être retrouvés prochainement en ligne sur la plateforme Wattpad. Une première nouvelle a déjà vu le jour, Carnet de Prisme, qui plonge son lecteur dans une histoire centrée autour du personnages de Vangva et ses dilemmes moraux en tant que soldat de Prisme.",
-            "image" => "images/couv.png"
-        ),
-        array(
-            "title" => "LES COULISSES DE L'UNIVERS",
-            "category" => "RÉSEAUX & PATREON",
-            "description" => "Suivez l'autrice d'Aleréia sur ses réseaux sociaux Bluesky (avec des liens cliquables) et Mastodon pour découvrir régulièrement des illustrations, croquis et informations inédits sur l'univers et le travail de sa créatrice. Attention, vous risquez aussi d'y trouver des photos de mignons petits chats. Pour les contributeurs Patreon, vous pourrez accéder à certaines informations inédites et/ou en avant-première.",
-            "image" => "images/glitchfond.png"
-        ),
-    );
-
+    // $baseUrl = '/B5T1/projets/alereia_staging/';
     $groupedContent = array();
+
+    $urlMedia = $_GET['media'] ?? 'episode_pilote';
+
+    $currentMedia = $mediaContent[$urlMedia];
 
     foreach ($mediaContent as $media) {
         $category = $media['category'];
@@ -47,20 +24,34 @@
 ?>
 <nav class="nav nav-large">
     <ul class="container">
-        <li class="link"><a href="<?= $baseUrl ?>">Home</a></li>
-        <li class="link"><a href="<?= $baseUrl ?>monde">Monde</a></li>
-        <li class="link"><a href="<?= $baseUrl ?>magasin">Magasin</a></li>
-        <li class="link"><a href="<?= $baseUrl ?>news">News</a></li>
-        <li class="nav__medias">
+        <li class="link home">
+            <div class="glitch-wrapper">
+                <a href="<?= $baseUrl ?>" class="glitch-target">Aleréia</a>
+                <div class="glitch-layer-container"></div>
+            </div>
+        </li>
+        <!-- <li class="link">
+            <div class="glitch-wrapper">
+                <a href="<?= $baseUrl ?>univers" class="glitch-target">Monde</a>
+                <div class="glitch-layer-container"></div>
+            </div>
+        </li> -->
+        <li class="link nav__medias">
             <span class="nav__medias__title">Médias</span>
             <div class="nav__medias__box">
                 <div class="nav__medias__box__overflow">
                     <?php foreach ($groupedContent as $category): ?>
-                        <div class="nav__medias__box__category">
-                            <h2><?= $category['category'] ?></h2>
+                        <div class="nav__medias__box__category <?= in_array($currentMedia['url'], array_column($category['medias'], 'url')) ? '' : 'collapsed' ?>">
+                            <h2>
+                                <?= $category['category'] ?>
+                                <span class="category-toggle"></span>
+                            </h2>
                             <ul>
                                 <?php foreach ($category['medias'] as $media): ?>
-                                    <li><a href="<?= $baseUrl ?>medias"><?= $media['title'] ?></a></li>
+                                    <li class="glitch-wrapper">
+                                        <a href="<?= $baseUrl ?>medias?media=<?= $media['url'] ?>" class="glitch-target"><?= $media['title'] ?></a>
+                                        <div class="glitch-layer-container"></div>
+                                    </li>
                                 <?php endforeach; ?>
                             </ul>
                         </div>
@@ -68,22 +59,31 @@
                 </div>
             </div>
         </li>
+        <li class="link">
+            <div class="glitch-wrapper">
+                <a href="<?= $baseUrl ?>news?news=<?= $news['l_episode_pilote_enfin_disponible']['url'] ?>" class="glitch-target">Actualités</a>
+                <div class="glitch-layer-container"></div>
+            </div>
+        </li>
+        <li class="link">
+            <a href="<?= $baseUrl ?>magasin" class="disabled">Boutique</a>
+        </li>
     </ul>
 </nav>
 
 <nav class="nav nav-small">
     <button class="nav-small__button">
-        <span></span>
+        <span></span> 
         <span></span>
         <span></span>
     </button>
 
     <div class="nav-small__content">
         <ul class="nav-small__content__list">
-            <li><a href="<?= $baseUrl ?>">Home</a></li>
-            <li><a href="<?= $baseUrl ?>monde">Monde</a></li>
-            <li><a href="<?= $baseUrl ?>magasin">Magasin</a></li>
-            <li><a href="<?= $baseUrl ?>news">News</a></li>
+            <li><a href="<?= $baseUrl ?>">Accueil</a></li>
+            <li><a href="<?= $baseUrl ?>univers">Univers</a></li>
+            <li><a href="<?= $baseUrl ?>magasin" class="disabled">Boutique</a></li>
+            <li><a href="<?= $baseUrl ?>news">Actualité</a></li>
             <li class="nav__medias">
                 <span>Médias <div class="nav-small__medias__icon"></div></span>
                 <div class="nav__medias__box">
@@ -92,7 +92,7 @@
                             <h2><?= $category['category'] ?></h2>
                             <ul>
                                 <?php foreach ($category['medias'] as $media): ?>
-                                    <li class="nav__medias__box__el"><a href="<?= $baseUrl ?>medias"><?= $media['title'] ?></a></li>
+                                    <li class=<?php echo("nav__medias__box__el") ?>><a href="<?= $baseUrl ?>medias"><?= $media['title'] ?></a></li>
                                 <?php endforeach; ?>
                             </ul>
                         </div>

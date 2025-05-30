@@ -1,35 +1,53 @@
 .header {
+    position: relative;
     min-height: 100vh;
     background-image: url('../images/headerbg.png');
     background-size: cover;
-    background-position: 65% center;
-    padding-top: 50vh;
+    background-position: 90% center;
+    padding-top: 5vh;
+    padding-bottom: 3rem;
 
     @include mq("md") {
         background-position: center center;
-        padding-top: 0;
+        padding-top: 20vh;
         padding-bottom: 5rem;
     }
 
     h1 {
-        margin: 5rem 0;
         color: white;
-        text-transform: uppercase;
+        display: block;
+        max-width: 700px;
+        width: 100%;
+        margin-bottom: 30vh;
+        
         font-family: "boucherie-block", sans-serif;
         font-weight: 400;
         font-style: normal;
-        font-size: 5rem;
-        text-align: center;
 
         @include mq("md") {
             margin: 0;
-            visibility: hidden;
+            font-size: 10rem;
+            // visibility: hidden;
+        }
+    }
+
+    &__logo {
+        display: block;
+        max-width: 700px;
+        width: 100%;
+        margin-bottom: 30vh;
+
+        @include mq("md") {
+            position: absolute;
+            top: 7rem;
+            left: 0;
+            margin-bottom: 0;
         }
     }
 
     &__news {
         @include mq("md") {
-            padding-top: 60vh;
+            padding-top: 30vh;
         }
 
         &__list {
@@ -71,6 +89,7 @@
 
         &__header {
             height: 90px;
+            margin-bottom: 1rem;
         }
 
         &__title {
@@ -96,4 +115,15 @@
             text-decoration: none;
         }
     }
+      
+    #glitch-layer-container {
+        position: relative;
+        pointer-events: none;
+        z-index: 1000;
+    }
+    .glitch-slice {
+        position: absolute;
+        will-change: transform;
+    }
+         
 }
