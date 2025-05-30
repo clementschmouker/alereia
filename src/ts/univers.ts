@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import gsap from 'gsap';
 
 import PillarComponent from './pillarComponent';
-import Door from './door';
+import Door from './Door';
 import * as CameraUtils from 'three/examples/jsm/utils/CameraUtils';
 
 const Universe = () => {

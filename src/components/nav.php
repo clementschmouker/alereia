@@ -1,6 +1,6 @@
 <?php
-    $baseUrl = '/alereia/public/';
-    // $baseUrl = '/B5T1/projets/alereia_staging/';
+    // $baseUrl = '/alereia/public/';
+    $baseUrl = '/B5T1/projets/alereia_staging/';
     $groupedContent = array();
 
     $urlMedia = $_GET['media'] ?? 'episode_pilote';

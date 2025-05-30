@@ -2,12 +2,12 @@
     $mediaContent = isset($content) && is_object($content) ? $content : null;
 ?>
 
-<section class="section-media">
+<section class="section-media" style="background-image: url('<?php echo $mediaContent->image ?>');">
     <!-- <div class="separator glitch-problem-element"></div> -->
      <div class="separator">
         <?php include './components/indexMediaSeparatorComponent.php' ?>
     </div>
-    <div class="container" style="background-image: url('<?php echo $mediaContent->image ?>');">
+    <div class="container">
         <div class="media">
             <div class="media__content">
                 <div class="media__content__head">

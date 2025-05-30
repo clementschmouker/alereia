@@ -21,7 +21,7 @@
             }
             echo $mediaContent[$media]['title'];
             $title = $mediaContent[$media]['title'];
-            $description = $mediaContent[$media]['description'];
+            $description = $mediaContent[$media]['description_long'];
             $backgroundUrl = $mediaContent[$media]['background_url'];
         ?>
 
@@ -31,7 +31,7 @@
                     <h1><?= $title ?></h1>
                     <p><?= $description ?></p>
                     <div class="glitch-wrapper">
-                        <a href="<?= $mediaContent[$media]['external_url'] ?>" class="glitch-target link-button">
+                        <a target="_blank" href="<?= $mediaContent[$media]['external_url'] ?>" class="glitch-target link-button">
                             Accéder
                             <span class="link-button__icon"></span>
                         </a>
