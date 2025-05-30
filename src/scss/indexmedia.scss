@@ -5,7 +5,7 @@
 
     background: black;
     background-size: contain;
-    background-size: no-repeat;
+    background-repeat: no-repeat;
 
     @include mq("md") {
         min-height: 800px;
