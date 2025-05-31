@@ -4,7 +4,8 @@
     z-index: 0;
 
     background: black;
-    background-size: contain;
+    background-size: cover;
+    background-position: center;
     background-repeat: no-repeat;
 
     @include mq("md") {
@@ -61,7 +62,7 @@
         @include mq("md") {
             width: 500px;
             position: absolute;
-            top: 2rem;
+            top: 12rem;
             left: 2rem;
             padding: 1.5rem 3.8rem;
         }

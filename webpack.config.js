@@ -57,6 +57,10 @@ module.exports = {
               {
                 from: 'src/fonts/**/*',
                 to: path.resolve(__dirname, 'public/fonts/[name][ext]'),
+              },
+              {
+                from: 'src/pdf/**/*',
+                to: path.resolve(__dirname, 'public/pdf/[name][ext]'),
               }
             ],
           }),

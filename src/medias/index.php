@@ -31,9 +31,11 @@
                     <h1><?= $title ?></h1>
                     <p><?= $description ?></p>
                     <div class="glitch-wrapper">
-                        <a target="_blank" href="<?= $mediaContent[$media]['external_url'] ?>" class="glitch-target link-button">
-                            Accéder
-                            <span class="link-button__icon"></span>
+                        <a target="_blank" href="<?= $mediaContent[$media]['external_url'] ?>" class="glitch-target link-button <?= $mediaContent[$media]['unavailable'] === true ? 'disabled' : '' ?>">
+                            <?= $mediaContent[$media]['unavailable'] ? 'Non disponible' : 'Accéder' ?>
+                            <?php if ($mediaContent[$media]['unavailable'] === false) { ?>
+                                <span class="link-button__icon"></span>
+                            <?php } ?>
                         </a>
                         <div class="glitch-layer-container"></div>
                     </div>

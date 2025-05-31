@@ -20,6 +20,11 @@
 
         .link-button {
             float: right;
+
+            &.disabled {
+                pointer-events: none;
+                background: grey;
+            }
         }
     }
 

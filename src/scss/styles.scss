@@ -70,6 +70,8 @@ button {
     text-decoration: none;
     font-family: 'Tablon', sans-serif;
 
+    transition: all .3s ease;
+
     &__icon {
         display: inline-block;
         width: 1rem;
@@ -77,6 +79,10 @@ button {
         margin-left: 1rem;
         background-image: url('../images/outsidelink.png');
         background-size: contain;
+    }
+
+    &:hover {
+        filter: brightness(0.8);
     }
 }
 

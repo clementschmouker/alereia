@@ -3,11 +3,12 @@
         'episode_pilote' => array(
             "title" => "ÉPISODE PILOTE",
             "category" => "Jeux vidéo",
-            "description" => "L'épisode pilote (remplacer par son nom définitif plus tard) est un jeu vidéo narratif très court qui vous plonge directement dans le quotidien de personnages centraux d'Aleréia, le jour d'une mission particulière. Découvrez comment Vangva, Ilyem et Syel évoluent dans ce monde qui leur semble hostile, avec un premier aperçu des pouvoirs spéciaux dont ils ont hérité.<br><br>Vous pouvez y jouer directement sur le site, sans besoin de téléchargement.",
-            "description_long" => "<p>[Episode pilote] est pensé comme une introduction à l'univers d'Aleréia. Ce court jeu vidéo narratif, qui s'apparente plutôt à un Visual Novel, a été pensé pour amener les joueurs à explorer les principaux concepts de ce monde à travers un fil rouge : celui d'une mission secrète. </p>
+            "description" => "L'épisode pilote Surveillance est un jeu vidéo narratif très court qui vous plonge directement dans le quotidien de personnages centraux d'Aleréia, le jour d'une mission particulière. Découvrez comment Vangva, Ilyem et Syel évoluent dans ce monde qui leur semble hostile, avec un premier aperçu des pouvoirs spéciaux dont ils ont hérité.<br><br>Vous pouvez y jouer directement sur le site, sans besoin de téléchargement.",
+            "description_long" => "<p>Surveillance est pensé comme une introduction à l'univers d'Aleréia. Ce court jeu vidéo narratif, qui s'apparente plutôt à un Visual Novel, a été pensé pour amener les joueurs à explorer les principaux concepts de ce monde à travers un fil rouge : celui d'une mission secrète. </p>
                                     <p>Pour une petite demi-heure de gameplay, vous aurez l'occasion de découvrir la ville de Brissa et ses différents acteurs, à travers les yeux de Vangva et d'Ilyem. Qui sont les Nodistes ? Quel rôle joue Prisme ? Pourquoi Syel est-il si spécial ? Quelle est l'étendue des pouvoirs des 'Glitcher', ces êtres spéciaux ramenés à la vie après avoir été tués une fois ? Tant d'interrogations qui ne sont abordées ici qu'en surface, mais qui vous donneront, nous l'espérons, envie de continuer à fouler les terres d'Aleréia pour en savoir plus !</p>",
             "image" => "images/BanniereVN.jpg",
             "isLeft" => false,
+            'unavailable' => false,
             "url" => 'episode_pilote',
             'background_url' => "../images/BanniereVN.jpg",
             "external_url" => "/B5T1/projets/alereia_vn_staging"
@@ -24,9 +25,10 @@
                                     <p>Paroles : Gaëlle Louvet, KylerVLK, Charlie Breidt</p>",
             "image" => "images/BanniereMusiqueFinale.jpg",
             "isLeft" => false,
+            'unavailable' => false,
             "url" => 'si_j_ouvre_les_yeux',
             'background_url' => '../images/BanniereMusiqueFinale.jpg',
-            "external_url" => "#"
+            "external_url" => "https://www.youtube.com/watch?v=MFMT2T55Yfo"
         ),
     'carnet_de_prisme' =>  array(
             "title" => "CARNET DE PRISME",
@@ -38,9 +40,10 @@
                                     <p>Carnet de Prisme est la première nouvelle qui s'inscrit dans l'univers d'Aleréia. Elle permet de suivre le quotidien de l'un des personnages principaux à un stade déjà très avancé de l'histoire, et ne sera donc publiée officiellement que dans de nombreuses années. À ce stade, il ne s'agit que d'un premier jet qui ne restera pas nécessairement canon au sein de l'univers.</p>",
             "image" => "images/BanniereLitteratureFinale.jpg",
             "isLeft" => false,
+            'unavailable' => false,
             "url" => "carnet_de_prisme",
             'background_url' => '../images/BanniereLitteratureFinale.jpg',
-            "external_url" => "#"
+            "external_url" => "../pdf/CarnetdePrismeFINALPDF.pdf"
         ),
         'les_coulisses_de_l_univers' => array(
             "title" => "LES COULISSES DE L'UNIVERS",
@@ -51,6 +54,7 @@
                                     <p>Suivez-nous sur ces réseaux pour en apprendre toujours plus sur l'univers, sa conception, ses anecdotes et bien évidemment, contempler des illustrations inédites de ses personnages ! </p>",
             "image" => "images/BanniereReseauxFinale.jpg",
             "isLeft" => true,
+            'unavailable' => true,
             "url" => "les_coulisses_de_l_univers",
             'background_url' => "../images/BanniereReseauxFinale.jpg",
             "external_url" => "#"
