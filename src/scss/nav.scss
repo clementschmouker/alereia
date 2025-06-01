@@ -109,7 +109,10 @@
             transform: translateY(30px);
             opacity: 0;
             pointer-events: none;
-            height: 300px !important;
+
+            @include mq('md') {
+                height: 300px !important;
+            }
 
             transition: all .3s ease-out;
 

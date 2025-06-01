@@ -46,10 +46,32 @@
         &__title {
             font-family: 'Tablon';
             margin-bottom: 0;
+            text-transform: uppercase;
         }
 
         &__container {
             margin-top: 3rem;
+
+            h2 {
+                font-family: 'Tablon';
+                text-transform: uppercase;
+            }
+
+            .cta {
+                display: inline-block;
+                font-family: 'Tablon';
+                text-transform: uppercase;
+                text-decoration: none;
+                background: white;
+                color: black;
+                padding: 1rem 2rem;
+
+                transition: all .3s ease;
+
+                &:hover {
+                    background: rgba(220, 220, 220, 1);
+                }
+            }
         }
 
         img {
@@ -65,6 +87,7 @@
         background: $dark-color;
         color: white;
         box-sizing: border-box;
+        text-transform: uppercase;
 
         @include mq("md") {
             width: 315px;
@@ -97,6 +120,15 @@
 
             h3 {
                 font-family: 'Tablon';
+            }
+
+            span {
+                display: block;
+                text-transform: none;
+
+                &.date {
+                    font-size: 0.7rem;
+                }
             }
         }
     }

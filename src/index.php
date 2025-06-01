@@ -4,12 +4,22 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang='fr'>
     <head>
         <title>Aleréia</title>
         <link rel="stylesheet" href="dist/style.css">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://use.typekit.net/vbr6avk.css">
+        <meta charset="UTF-8">
+        <meta name="description" content="Aleréia est un univers transmédia qui vous transporte dans un monde glitché. Suivez les aventure de 6 héros à travers différentes histoires. Découvrez cette univers à travers ce site !">
+        <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+        
+        <meta property="og:title" content="Aleréia">
+        <meta property="og:description" content="Un univers transmédia captivant qui vous emportera dans un univers complexe, politique, et écologique.">
+        <meta property="og:image" content="https://www.alereia.com/images/headerbg.jpg">
+        <meta property="og:url" content="https://www.alereia.com/">
     </head>
     <body>
         <?php include './components/nav.php'; ?>

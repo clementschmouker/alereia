@@ -1,5 +1,6 @@
 <?php
-    $baseUrl = '/alereia/public/';
+    $baseUrl = 'https://alereia.com/';
+    // $baseUrl = '/alereia/public/';
     // $baseUrl = '/B5T1/projets/alereia_staging/';
     $groupedContent = array();
 
@@ -30,12 +31,6 @@
                 <div class="glitch-layer-container"></div>
             </div>
         </li>
-        <!-- <li class="link">
-            <div class="glitch-wrapper">
-                <a href="<?= $baseUrl ?>univers" class="glitch-target">Monde</a>
-                <div class="glitch-layer-container"></div>
-            </div>
-        </li> -->
         <li class="link nav__medias">
             <span class="nav__medias__title">Médias</span>
             <div class="nav__medias__box">

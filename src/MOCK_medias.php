@@ -11,7 +11,7 @@
             'unavailable' => false,
             "url" => 'episode_pilote',
             'background_url' => "../images/BanniereVN.jpg",
-            "external_url" => "/B5T1/projets/alereia_vn_staging"
+            "external_url" => "https://alereia.com/surveillance"
         ),
         'si_j_ouvre_les_yeux' => array(
             "title" => "SI J'OUVRE LES YEUX",

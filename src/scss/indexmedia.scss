@@ -41,10 +41,17 @@
         }
     }
 
+    .media__content {
+        top: 4rem;
+    }
+
     &:nth-child(even) {
         .media__content {
             left: auto;
-            right: 2rem;
+
+            @include mq('md') {
+                right: 2rem;
+            }
         }
     }
 }
