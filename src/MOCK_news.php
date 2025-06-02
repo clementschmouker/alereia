@@ -12,6 +12,7 @@
                 <img src='../images/jeu.gif' alt='séquence de jeu – surveillance' />
                 <p>Si vous souhaitez découvrir le projet, n'attendez plus...</p>
                 <a class='cta' target='_blank' href='https://alereia.com/surveillance'>Testez-le</a>
+                <p><small>Cet article a été boosté par ChatGPT</small></p>
             ",
             'url' => 'l_episode_pilote_enfin_disponible',
             'author' => 'Clément Schmouker'
@@ -30,7 +31,8 @@
                 <p>Aleréia est un univers transmédia en construction, mêlant fiction littéraire, narration visuelle, worldbuilding et contenus numériques. Ce carnet constitue un chapitre autonome, centré sur un personnage-clé et son basculement intérieur à la veille d’un affrontement qui pourrait tout détruire.</p>
                 <p>N'attendez plus, découvrez vite cet ouvrage...</p>
                 <a class='cta' href='../pdf/CarnetdePrismeFINALPDF.pdf' target='_blank'>Lire Carnet de Prisme</a>
-                ",
+                <p><small>Cet article a été boosté par ChatGPT</small></p>    
+            ",
             "url" => 'carnet_de_prisme_la_nouvelle_trepidante',
             'author' => 'Clément Schmouker'
         )
