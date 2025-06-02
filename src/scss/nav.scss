@@ -48,6 +48,7 @@
             }
 
             a, span {
+                position: relative;
                 color: white;
                 text-decoration: none;
                 text-transform: uppercase;
@@ -59,6 +60,28 @@
                     color: #aaa;
                     text-decoration: line-through;
                     pointer-events: none;
+
+                    &::after {
+                        display: none;
+                    }
+                }
+
+                &::after {
+                    content: '';
+                    display: block;
+                    width: 0;
+                    height: 3px;
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                    background: white;
+                    transition: all .3s ease;
+                }
+
+                &:hover {
+                    &::after {
+                        width: 100%;
+                    }
                 }
             }
 
@@ -81,6 +104,18 @@
             font-size: 1.25rem;
             font-weight: 500;
             font-family: 'Tablon', sans-serif;
+        }
+
+        &::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 3px;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            background: white;
+            transition: all .3s ease;
         }
 
         &:hover {
